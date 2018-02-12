@@ -19,5 +19,4 @@ public class Student {
 
     @ManyToMany(mappedBy = "students")
     private Set<Lecture> lectures;
-
 }
