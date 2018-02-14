@@ -85,7 +85,7 @@ public class StudentControllerTest {
 
         mockMvc.perform(post(BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(savedDTO)))
+                .content(asJsonString(studentDTO)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.email", equalTo(EMAIL)));
     }
