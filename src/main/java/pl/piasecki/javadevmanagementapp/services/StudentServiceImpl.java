@@ -3,9 +3,12 @@ package pl.piasecki.javadevmanagementapp.services;
 import org.springframework.boot.context.config.ResourceNotFoundException;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+import pl.piasecki.javadevmanagementapp.api.mapper.LectureMapper;
 import pl.piasecki.javadevmanagementapp.api.mapper.StudentMapper;
 import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
+import pl.piasecki.javadevmanagementapp.domain.Lecture;
 import pl.piasecki.javadevmanagementapp.domain.Student;
+import pl.piasecki.javadevmanagementapp.repositories.LectureRepository;
 import pl.piasecki.javadevmanagementapp.repositories.StudentRepository;
 
 import java.util.List;
@@ -56,4 +59,17 @@ public class StudentServiceImpl implements StudentService {
     public void deleteStudent(Long id) {
         studentRepository.deleteById(id);
     }
+
+//    @Override
+//    public StudentDTO addLectureToStudent(Long studentId, Long lectureId) {
+//        Student student = studentRepository.findById(studentId)
+//                .orElseThrow(RuntimeException::new); //TODO better exception handler
+//
+//        Lecture lecture = lectureRepository.findById(lectureId)
+//                .orElseThrow(RuntimeException::new); //TODO better exception handler
+//
+//        student.getLectures().add(lecture);
+//        studentRepository.save(student);
+//        return studentMapper.studentToStudentDTO(student);
+//    }
 }

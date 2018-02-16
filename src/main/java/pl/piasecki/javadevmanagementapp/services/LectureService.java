@@ -10,5 +10,6 @@ public interface LectureService{
     LectureDTO createNewLecture(LectureDTO lectureDTO);
     LectureDTO updateLecture(Long id, LectureDTO lectureDTO);
     void deleteLecture(Long id);
+    LectureDTO addStudentToLecture(Long lectureId, Long studentId);
 
 }

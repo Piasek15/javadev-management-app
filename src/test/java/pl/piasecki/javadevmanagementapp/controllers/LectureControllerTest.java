@@ -9,11 +9,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
+import pl.piasecki.javadevmanagementapp.domain.Student;
 import pl.piasecki.javadevmanagementapp.services.LectureService;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 import static org.hamcrest.Matchers.equalTo;
@@ -116,4 +115,24 @@ public class LectureControllerTest {
         verify(lectureService).deleteLecture(1L);
     }
 
+    @Test
+    public void addStudentToLecture() throws Exception {
+        Student student = new Student();
+        student.setFirstName(LOC);
+        Set<Student> students = new HashSet<>();
+        students.add(student);
+
+        LectureDTO lectureDTO = new LectureDTO();
+        lectureDTO.setTopic(TOPIC);
+        lectureDTO.setStudents(students);
+
+        when(lectureService.addStudentToLecture(anyLong(), anyLong())).thenReturn(lectureDTO);
+
+        mockMvc.perform(put(BASE_URL + "/1/student/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.students", hasSize(1)))
+                .andExpect(jsonPath("$.topic", equalTo(TOPIC)))
+                .andExpect(jsonPath("$.students[0].firstName", equalTo(LOC)));
+    }
 }

@@ -8,11 +8,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pl.piasecki.javadevmanagementapp.api.mapper.LectureMapper;
 import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
 import pl.piasecki.javadevmanagementapp.domain.Lecture;
+import pl.piasecki.javadevmanagementapp.domain.Student;
 import pl.piasecki.javadevmanagementapp.repositories.LectureRepository;
+import pl.piasecki.javadevmanagementapp.repositories.StudentRepository;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -26,16 +26,21 @@ public class LectureServiceImplTest {
     public static final String TOPIC = "Spring Framework";
     public static final String LOC = "Rzeszow WSIZ";
     public Date date = new Date(2018, 1, 15);
+    public static final String FIRST_NAME = "Adam";
+    public static final long ID = 1L;
 
     LectureService lectureService;
 
     @Mock
     LectureRepository lectureRepository;
 
+    @Mock
+    StudentRepository studentRepository;
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        lectureService = new LectureServiceImpl(LectureMapper.INSTANCE, lectureRepository);
+        lectureService = new LectureServiceImpl(LectureMapper.INSTANCE, lectureRepository, studentRepository);
     }
 
     @Test
@@ -95,5 +100,31 @@ public class LectureServiceImplTest {
     public void deleteLecture() throws Exception {
         lectureRepository.deleteById(1L);
         verify(lectureRepository, times(1)).deleteById(anyLong());
+    }
+
+    @Test
+    public void addStudentToLecture() throws Exception {
+        //given
+        Student student = new Student();
+        student.setFirstName(FIRST_NAME);
+        student.setId(ID);
+        Set<Student> students = new HashSet<>();
+        students.add(student);
+
+        Lecture lecture = new Lecture();
+        lecture.setTopic(TOPIC);
+        lecture.setStudents(students);
+
+        when(lectureRepository.findById(anyLong())).thenReturn(Optional.ofNullable(lecture));
+        when(studentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(student));
+        when(lectureRepository.save(any(Lecture.class))).thenReturn(lecture);
+
+        //when
+        LectureDTO lectureDTO = lectureService.addStudentToLecture(ID, anyLong());
+
+        //then
+        assertEquals(TOPIC, lectureDTO.getTopic());
+        assertEquals(1, lectureDTO.getStudents().size());
+        assertEquals(FIRST_NAME, lectureDTO.getStudents().iterator().next().getFirstName());
     }
 }

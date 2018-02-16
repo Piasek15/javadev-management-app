@@ -9,10 +9,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
+import pl.piasecki.javadevmanagementapp.domain.Lecture;
 import pl.piasecki.javadevmanagementapp.services.StudentService;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 import static org.hamcrest.Matchers.equalTo;
@@ -33,6 +36,7 @@ public class StudentControllerTest {
     public static final String FIRST_NAME = "Adam";
     public static final String LAST_NAME = "Malysz";
     public static final String EMAIL = "adam.malysz@gmail.com";
+    //public static final String TOPIC = "Spring Framework";
 
     @Mock
     StudentService studentService;
@@ -115,4 +119,24 @@ public class StudentControllerTest {
 
         verify(studentService).deleteStudent(1L);
     }
+
+//    @Test
+//    public void addLectureToStudent() throws Exception {
+//        Lecture lecture = new Lecture();
+//        lecture.setTopic(TOPIC);
+//        Set<Lecture> lectures = new HashSet<>();
+//        lectures.add(lecture);
+//
+//        StudentDTO studentDTO = new StudentDTO();
+//        studentDTO.setFirstName(FIRST_NAME);
+//        studentDTO.setLectures(lectures);
+//
+//        when(studentService.addLectureToStudent(anyLong(), anyLong())).thenReturn(studentDTO);
+//
+//        mockMvc.perform(put(BASE_URL + "/1/lecture/1")
+//                .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.firstName", equalTo(FIRST_NAME)))
+//                .andExpect(jsonPath("$.lectures", hasSize(1)));
+//    }
 }

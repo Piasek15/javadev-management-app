@@ -4,7 +4,9 @@ import org.springframework.stereotype.Service;
 import pl.piasecki.javadevmanagementapp.api.mapper.LectureMapper;
 import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
 import pl.piasecki.javadevmanagementapp.domain.Lecture;
+import pl.piasecki.javadevmanagementapp.domain.Student;
 import pl.piasecki.javadevmanagementapp.repositories.LectureRepository;
+import pl.piasecki.javadevmanagementapp.repositories.StudentRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,10 +16,12 @@ public class LectureServiceImpl implements LectureService {
 
     private final LectureMapper lectureMapper;
     private final LectureRepository lectureRepository;
+    private final StudentRepository studentRepository;
 
-    public LectureServiceImpl(LectureMapper lectureMapper, LectureRepository lectureRepository) {
+    public LectureServiceImpl(LectureMapper lectureMapper, LectureRepository lectureRepository, StudentRepository studentRepository) {
         this.lectureMapper = lectureMapper;
         this.lectureRepository = lectureRepository;
+        this.studentRepository = studentRepository;
     }
 
     @Override
@@ -53,5 +57,18 @@ public class LectureServiceImpl implements LectureService {
     @Override
     public void deleteLecture(Long id) {
         lectureRepository.deleteById(id);
+    }
+
+    @Override
+    public LectureDTO addStudentToLecture(Long lectureId, Long studentId) {
+        Lecture lecture = lectureRepository.findById(lectureId)
+                .orElseThrow(RuntimeException::new);
+
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(RuntimeException::new);
+
+        lecture.addStudent(student);
+        lectureRepository.save(lecture);
+        return lectureMapper.lectureToLectureDTO(lecture);
     }
 }

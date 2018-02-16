@@ -1,13 +1,18 @@
 package pl.piasecki.javadevmanagementapp.domain;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 public class Lecture {
 
@@ -19,10 +24,14 @@ public class Lecture {
     private String localization;
     private Date date;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "lecture_student",
         joinColumns = @JoinColumn(name = "lecture_id"),
         inverseJoinColumns = @JoinColumn(name = "student_id"))
-    private Set<Student> students = new HashSet<>();
+    private Set<Student> students;
+
+    public void addStudent(Student student){
+        students.add(student);
+    }
 
 }

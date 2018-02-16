@@ -50,4 +50,10 @@ public class LectureController {
         lectureService.deleteLecture(id);
     }
 
+    @PutMapping("/{lectureId}/student/{studentId}")
+    @ResponseStatus(HttpStatus.OK)
+    public LectureDTO addStudentToLecture(@PathVariable Long lectureId, @PathVariable Long studentId){
+        return lectureService.addStudentToLecture(lectureId, studentId);
+    }
+
 }
