@@ -52,9 +52,6 @@ public class StudentController {
         studentService.deleteStudent(id);
     }
 
-//    @PutMapping("/{studentId}/lecture/{lectureId}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public StudentDTO addLectureToStudent(@PathVariable Long studentId, @PathVariable Long lectureId){
-//        return studentService.addLectureToStudent(studentId, lectureId);
-//    }
+
+
 }

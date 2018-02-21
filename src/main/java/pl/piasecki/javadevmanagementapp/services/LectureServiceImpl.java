@@ -2,7 +2,10 @@ package pl.piasecki.javadevmanagementapp.services;
 
 import org.springframework.stereotype.Service;
 import pl.piasecki.javadevmanagementapp.api.mapper.LectureMapper;
+import pl.piasecki.javadevmanagementapp.api.mapper.StudentMapper;
 import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
+import pl.piasecki.javadevmanagementapp.api.model.LectureWStudentListDTO;
+import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
 import pl.piasecki.javadevmanagementapp.domain.Lecture;
 import pl.piasecki.javadevmanagementapp.domain.Student;
 import pl.piasecki.javadevmanagementapp.repositories.LectureRepository;
@@ -15,11 +18,13 @@ import java.util.stream.Collectors;
 public class LectureServiceImpl implements LectureService {
 
     private final LectureMapper lectureMapper;
+    private final StudentMapper studentMapper;
     private final LectureRepository lectureRepository;
     private final StudentRepository studentRepository;
 
-    public LectureServiceImpl(LectureMapper lectureMapper, LectureRepository lectureRepository, StudentRepository studentRepository) {
+    public LectureServiceImpl(LectureMapper lectureMapper, StudentMapper studentMapper, LectureRepository lectureRepository, StudentRepository studentRepository) {
         this.lectureMapper = lectureMapper;
+        this.studentMapper = studentMapper;
         this.lectureRepository = lectureRepository;
         this.studentRepository = studentRepository;
     }
@@ -33,9 +38,9 @@ public class LectureServiceImpl implements LectureService {
     }
 
     @Override
-    public LectureDTO getLectureById(Long id) {
+    public LectureWStudentListDTO getLectureById(Long id) {
         return lectureRepository.findById(id)
-                .map(lectureMapper::lectureToLectureDTO)
+                .map(lectureMapper::lectureToLectureWStudentListDTO)
                 .orElseThrow(RuntimeException::new);
     }
 
@@ -60,7 +65,7 @@ public class LectureServiceImpl implements LectureService {
     }
 
     @Override
-    public LectureDTO addStudentToLecture(Long lectureId, Long studentId) {
+    public LectureWStudentListDTO addStudentToLecture(Long lectureId, Long studentId) {
         Lecture lecture = lectureRepository.findById(lectureId)
                 .orElseThrow(RuntimeException::new);
 
@@ -69,11 +74,11 @@ public class LectureServiceImpl implements LectureService {
 
         lecture.addStudent(student);
         lectureRepository.save(lecture);
-        return lectureMapper.lectureToLectureDTO(lecture);
+        return lectureMapper.lectureToLectureWStudentListDTO(lecture);
     }
 
     @Override
-    public LectureDTO deleteStudentFromLecture(Long lectureId, Long studentId) {
+    public LectureWStudentListDTO deleteStudentFromLecture(Long lectureId, Long studentId) {
         Lecture lecture = lectureRepository.findById(lectureId)
                 .orElseThrow(RuntimeException::new);
 
@@ -82,6 +87,16 @@ public class LectureServiceImpl implements LectureService {
 
         lecture.deleteStudent(student);
         lectureRepository.save(lecture);
-        return lectureMapper.lectureToLectureDTO(lecture);
+        return lectureMapper.lectureToLectureWStudentListDTO(lecture);
+    }
+
+    @Override
+    public List<StudentDTO> getLectureStudents(Long lectureId) {
+        return lectureRepository.findById(lectureId)
+                .orElseThrow(RuntimeException::new)
+                .getStudents()
+                .stream()
+                .map(studentMapper::studentToStudentDTO)
+                .collect(Collectors.toList());
     }
 }

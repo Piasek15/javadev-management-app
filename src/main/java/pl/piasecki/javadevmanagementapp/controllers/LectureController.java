@@ -3,6 +3,8 @@ package pl.piasecki.javadevmanagementapp.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
+import pl.piasecki.javadevmanagementapp.api.model.LectureWStudentListDTO;
+import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
 import pl.piasecki.javadevmanagementapp.services.LectureService;
 
 import java.util.List;
@@ -28,7 +30,7 @@ public class LectureController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public LectureDTO getLectureById(@PathVariable Long id){
+    public LectureWStudentListDTO getLectureById(@PathVariable Long id){
         return lectureService.getLectureById(id);
     }
 
@@ -52,14 +54,20 @@ public class LectureController {
 
     @PutMapping("/{lectureId}/students/{studentId}/add")
     @ResponseStatus(HttpStatus.OK)
-    public LectureDTO addStudentToLecture(@PathVariable Long lectureId, @PathVariable Long studentId){
+    public LectureWStudentListDTO addStudentToLecture(@PathVariable Long lectureId, @PathVariable Long studentId){
         return lectureService.addStudentToLecture(lectureId, studentId);
     }
 
     @PutMapping("/{lectureId}/students/{studentId}/delete")
     @ResponseStatus(HttpStatus.OK)
-    public LectureDTO deleteStudentFromLecture(@PathVariable Long lectureId, @PathVariable Long studentId){
+    public LectureWStudentListDTO deleteStudentFromLecture(@PathVariable Long lectureId, @PathVariable Long studentId){
         return lectureService.deleteStudentFromLecture(lectureId, studentId);
+    }
+
+    @GetMapping("/{lectureId}/students")
+    @ResponseStatus(HttpStatus.OK)
+    public List<StudentDTO> getLectureStudents(@PathVariable Long lectureId){
+        return lectureService.getLectureStudents(lectureId);
     }
 
 }

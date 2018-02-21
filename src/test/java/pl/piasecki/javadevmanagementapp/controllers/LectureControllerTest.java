@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
+import pl.piasecki.javadevmanagementapp.api.model.LectureWStudentListDTO;
+import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
 import pl.piasecki.javadevmanagementapp.domain.Student;
 import pl.piasecki.javadevmanagementapp.services.LectureService;
 
@@ -61,10 +63,10 @@ public class LectureControllerTest {
 
     @Test
     public void getLectureById() throws Exception {
-        LectureDTO lectureDTO = new LectureDTO();
-        lectureDTO.setTopic(TOPIC);
+        LectureWStudentListDTO lectureWStudentListDTO = new LectureWStudentListDTO();
+        lectureWStudentListDTO.setTopic(TOPIC);
 
-        when(lectureService.getLectureById(anyLong())).thenReturn(lectureDTO);
+        when(lectureService.getLectureById(anyLong())).thenReturn(lectureWStudentListDTO);
 
         mockMvc.perform(get(BASE_URL + "/1")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -122,11 +124,11 @@ public class LectureControllerTest {
         Set<Student> students = new HashSet<>();
         students.add(student);
 
-        LectureDTO lectureDTO = new LectureDTO();
-        lectureDTO.setTopic(TOPIC);
-        lectureDTO.setStudents(students);
+        LectureWStudentListDTO lectureWStudentListDTO = new LectureWStudentListDTO();
+        lectureWStudentListDTO.setTopic(TOPIC);
+        lectureWStudentListDTO.setStudents(students);
 
-        when(lectureService.addStudentToLecture(anyLong(), anyLong())).thenReturn(lectureDTO);
+        when(lectureService.addStudentToLecture(anyLong(), anyLong())).thenReturn(lectureWStudentListDTO);
 
         mockMvc.perform(put(BASE_URL + "/1/students/1/add")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -144,11 +146,11 @@ public class LectureControllerTest {
         students.add(student);
         students.remove(student);
 
-        LectureDTO lectureDTO = new LectureDTO();
-        lectureDTO.setTopic(TOPIC);
-        lectureDTO.setStudents(students);
+        LectureWStudentListDTO lectureWStudentListDTO = new LectureWStudentListDTO();
+        lectureWStudentListDTO.setTopic(TOPIC);
+        lectureWStudentListDTO.setStudents(students);
 
-        when(lectureService.deleteStudentFromLecture(anyLong(), anyLong())).thenReturn(lectureDTO);
+        when(lectureService.deleteStudentFromLecture(anyLong(), anyLong())).thenReturn(lectureWStudentListDTO);
 
 
         mockMvc.perform(put(BASE_URL + "/1/students/1/delete")
@@ -156,5 +158,17 @@ public class LectureControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.students", hasSize(0)))
                 .andExpect(jsonPath("$.topic", equalTo(TOPIC)));
+    }
+
+    @Test
+    public void getLectureStudents() throws Exception {
+        List<StudentDTO> studentDTOS = Arrays.asList(new StudentDTO(), new StudentDTO());
+
+        when(lectureService.getLectureStudents(anyLong())).thenReturn(studentDTOS);
+
+        mockMvc.perform(get(BASE_URL + "/1/students")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
     }
 }

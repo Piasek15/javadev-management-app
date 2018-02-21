@@ -4,9 +4,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pl.piasecki.javadevmanagementapp.api.mapper.LectureMapper;
+import pl.piasecki.javadevmanagementapp.api.mapper.StudentMapper;
 import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
+import pl.piasecki.javadevmanagementapp.api.model.LectureWStudentListDTO;
+import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
 import pl.piasecki.javadevmanagementapp.domain.Lecture;
 import pl.piasecki.javadevmanagementapp.domain.Student;
 import pl.piasecki.javadevmanagementapp.repositories.LectureRepository;
@@ -40,7 +42,7 @@ public class LectureServiceImplTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        lectureService = new LectureServiceImpl(LectureMapper.INSTANCE, lectureRepository, studentRepository);
+        lectureService = new LectureServiceImpl(LectureMapper.INSTANCE, StudentMapper.INSTANCE, lectureRepository, studentRepository);
     }
 
     @Test
@@ -61,9 +63,9 @@ public class LectureServiceImplTest {
 
         when(lectureRepository.findById(anyLong())).thenReturn(java.util.Optional.ofNullable(lecture));
 
-        LectureDTO lectureDTO = lectureService.getLectureById(anyLong());
+        LectureWStudentListDTO lectureWStudentListDTO = lectureService.getLectureById(anyLong());
 
-        assertEquals(TOPIC, lectureDTO.getTopic());
+        assertEquals(TOPIC, lectureWStudentListDTO.getTopic());
     }
 
     @Test
@@ -120,12 +122,12 @@ public class LectureServiceImplTest {
         when(lectureRepository.save(any(Lecture.class))).thenReturn(lecture);
 
         //when
-        LectureDTO lectureDTO = lectureService.addStudentToLecture(ID, anyLong());
+        LectureWStudentListDTO lectureWStudentListDTO = lectureService.addStudentToLecture(ID, anyLong());
 
         //then
-        assertEquals(TOPIC, lectureDTO.getTopic());
-        assertEquals(1, lectureDTO.getStudents().size());
-        assertEquals(FIRST_NAME, lectureDTO.getStudents().iterator().next().getFirstName());
+        assertEquals(TOPIC, lectureWStudentListDTO.getTopic());
+        assertEquals(1, lectureWStudentListDTO.getStudents().size());
+        assertEquals(FIRST_NAME, lectureWStudentListDTO.getStudents().iterator().next().getFirstName());
     }
 
     @Test
@@ -147,9 +149,29 @@ public class LectureServiceImplTest {
         when(lectureRepository.save(any(Lecture.class))).thenReturn(lecture);
 
         //when
-        LectureDTO lectureDTO = lectureService.deleteStudentFromLecture(ID, anyLong());
+        LectureWStudentListDTO lectureWStudentListDTO = lectureService.deleteStudentFromLecture(ID, anyLong());
 
-        assertEquals(TOPIC, lectureDTO.getTopic());
-        assertEquals(0, lectureDTO.getStudents().size());
+        assertEquals(TOPIC, lectureWStudentListDTO.getTopic());
+        assertEquals(0, lectureWStudentListDTO.getStudents().size());
+    }
+
+    @Test
+    public void getLectureStudents() throws Exception {
+        Student student1 = new Student();
+        Student student2 = new Student();
+
+        Set<Student> studentSet = new HashSet<>();
+
+        studentSet.add(student1);
+        studentSet.add(student2);
+
+        Lecture lecture = new Lecture();
+        lecture.setStudents(studentSet);
+
+        when(lectureRepository.findById(anyLong())).thenReturn(Optional.ofNullable(lecture));
+
+        List<StudentDTO> studentDTOS = lectureService.getLectureStudents(anyLong());
+
+        assertEquals(2, studentDTOS.size());
     }
 }

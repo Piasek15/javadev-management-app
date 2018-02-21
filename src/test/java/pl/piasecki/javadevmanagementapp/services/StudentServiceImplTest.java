@@ -11,10 +11,7 @@ import pl.piasecki.javadevmanagementapp.domain.Student;
 import pl.piasecki.javadevmanagementapp.repositories.LectureRepository;
 import pl.piasecki.javadevmanagementapp.repositories.StudentRepository;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -38,10 +35,13 @@ public class StudentServiceImplTest {
     @Mock
     StudentRepository studentRepository;
 
+    @Mock
+    LectureRepository lectureRepository;
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        studentService = new StudentServiceImpl(StudentMapper.INSTANCE, studentRepository);
+        studentService = new StudentServiceImpl(StudentMapper.INSTANCE, studentRepository, lectureRepository);
     }
 
     @Test
@@ -106,27 +106,4 @@ public class StudentServiceImplTest {
         verify(studentRepository, times(1)).deleteById(anyLong());
     }
 
-//    @Test
-//    public void addLectureToStudent() throws Exception {
-//        Lecture lecture = new Lecture();
-//        lecture.setTopic(TOPIC);
-//        lecture.setId(ID);
-//
-//        Set<Lecture> lectures = new HashSet<>();
-//        lectures.add(lecture);
-//
-//        Student student = new Student();
-//        student.setFirstName(FIRST_NAME);
-//        student.setLectures(lectures);
-//
-//        when(lectureRepository.findById(anyLong())).thenReturn(java.util.Optional.ofNullable(lecture));
-//        when(studentRepository.findById(anyLong())).thenReturn(java.util.Optional.ofNullable(student));
-//
-//
-//        StudentDTO studentDTO = studentService.addLectureToStudent(ID, anyLong());
-//
-//        assertEquals(FIRST_NAME, studentDTO.getFirstName());
-//        assertEquals(1, studentDTO.getLectures().size());
-//        assertEquals(TOPIC, studentDTO.getLectures().iterator().next().getTopic());
-//    }
 }
