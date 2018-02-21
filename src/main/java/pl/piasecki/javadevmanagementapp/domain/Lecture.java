@@ -34,4 +34,8 @@ public class Lecture {
         students.add(student);
     }
 
+    public void deleteStudent(Student student){
+        students.remove(student);
+    }
+
 }

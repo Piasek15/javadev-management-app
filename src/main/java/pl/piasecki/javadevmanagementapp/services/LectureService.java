@@ -11,5 +11,5 @@ public interface LectureService{
     LectureDTO updateLecture(Long id, LectureDTO lectureDTO);
     void deleteLecture(Long id);
     LectureDTO addStudentToLecture(Long lectureId, Long studentId);
-
+    LectureDTO deleteStudentFromLecture(Long lectureId, Long studentId);
 }

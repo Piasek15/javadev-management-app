@@ -128,11 +128,33 @@ public class LectureControllerTest {
 
         when(lectureService.addStudentToLecture(anyLong(), anyLong())).thenReturn(lectureDTO);
 
-        mockMvc.perform(put(BASE_URL + "/1/student/1")
+        mockMvc.perform(put(BASE_URL + "/1/students/1/add")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.students", hasSize(1)))
                 .andExpect(jsonPath("$.topic", equalTo(TOPIC)))
                 .andExpect(jsonPath("$.students[0].firstName", equalTo(LOC)));
+    }
+
+    @Test
+    public void deleteStudentFromLecture() throws Exception {
+        Student student = new Student();
+        student.setFirstName(LOC);
+        Set<Student> students = new HashSet<>();
+        students.add(student);
+        students.remove(student);
+
+        LectureDTO lectureDTO = new LectureDTO();
+        lectureDTO.setTopic(TOPIC);
+        lectureDTO.setStudents(students);
+
+        when(lectureService.deleteStudentFromLecture(anyLong(), anyLong())).thenReturn(lectureDTO);
+
+
+        mockMvc.perform(put(BASE_URL + "/1/students/1/delete")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.students", hasSize(0)))
+                .andExpect(jsonPath("$.topic", equalTo(TOPIC)));
     }
 }

@@ -127,4 +127,29 @@ public class LectureServiceImplTest {
         assertEquals(1, lectureDTO.getStudents().size());
         assertEquals(FIRST_NAME, lectureDTO.getStudents().iterator().next().getFirstName());
     }
+
+    @Test
+    public void deleteStudentFromLecture() throws Exception {
+        //given
+        Student student = new Student();
+        student.setFirstName(FIRST_NAME);
+        student.setId(ID);
+        Set<Student> students = new HashSet<>();
+        students.add(student);
+        students.remove(student);
+
+        Lecture lecture = new Lecture();
+        lecture.setTopic(TOPIC);
+        lecture.setStudents(students);
+
+        when(lectureRepository.findById(anyLong())).thenReturn(Optional.ofNullable(lecture));
+        when(studentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(student));
+        when(lectureRepository.save(any(Lecture.class))).thenReturn(lecture);
+
+        //when
+        LectureDTO lectureDTO = lectureService.deleteStudentFromLecture(ID, anyLong());
+
+        assertEquals(TOPIC, lectureDTO.getTopic());
+        assertEquals(0, lectureDTO.getStudents().size());
+    }
 }

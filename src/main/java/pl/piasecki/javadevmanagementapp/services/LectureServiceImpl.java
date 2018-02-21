@@ -71,4 +71,17 @@ public class LectureServiceImpl implements LectureService {
         lectureRepository.save(lecture);
         return lectureMapper.lectureToLectureDTO(lecture);
     }
+
+    @Override
+    public LectureDTO deleteStudentFromLecture(Long lectureId, Long studentId) {
+        Lecture lecture = lectureRepository.findById(lectureId)
+                .orElseThrow(RuntimeException::new);
+
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(RuntimeException::new);
+
+        lecture.deleteStudent(student);
+        lectureRepository.save(lecture);
+        return lectureMapper.lectureToLectureDTO(lecture);
+    }
 }
