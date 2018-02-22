@@ -4,7 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import pl.piasecki.javadevmanagementapp.api.mapper.LectureMapper;
 import pl.piasecki.javadevmanagementapp.api.mapper.StudentMapper;
+import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
 import pl.piasecki.javadevmanagementapp.domain.Lecture;
 import pl.piasecki.javadevmanagementapp.domain.Student;
@@ -35,13 +37,10 @@ public class StudentServiceImplTest {
     @Mock
     StudentRepository studentRepository;
 
-    @Mock
-    LectureRepository lectureRepository;
-
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        studentService = new StudentServiceImpl(StudentMapper.INSTANCE, studentRepository, lectureRepository);
+        studentService = new StudentServiceImpl(StudentMapper.INSTANCE, LectureMapper.INSTANCE, studentRepository);
     }
 
     @Test
@@ -106,4 +105,23 @@ public class StudentServiceImplTest {
         verify(studentRepository, times(1)).deleteById(anyLong());
     }
 
+    @Test
+    public void getStudentLectures() throws Exception {
+        Lecture lecture1 = new Lecture();
+        Lecture lecture2 = new Lecture();
+
+        Set<Lecture> lectures = new HashSet<>();
+
+        lectures.add(lecture1);
+        lectures.add(lecture2);
+
+        Student student = new Student();
+        student.setLectures(lectures);
+
+        when(studentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(student));
+
+        List<LectureDTO> lectureDTOS = studentService.getStudentLectures(anyLong());
+
+        assertEquals(2, lectureDTOS.size());
+    }
 }

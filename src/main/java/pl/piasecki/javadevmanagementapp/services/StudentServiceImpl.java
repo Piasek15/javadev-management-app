@@ -1,9 +1,10 @@
 package pl.piasecki.javadevmanagementapp.services;
 
 import org.springframework.stereotype.Service;
+import pl.piasecki.javadevmanagementapp.api.mapper.LectureMapper;
 import pl.piasecki.javadevmanagementapp.api.mapper.StudentMapper;
+import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
-import pl.piasecki.javadevmanagementapp.domain.Lecture;
 import pl.piasecki.javadevmanagementapp.domain.Student;
 import pl.piasecki.javadevmanagementapp.repositories.LectureRepository;
 import pl.piasecki.javadevmanagementapp.repositories.StudentRepository;
@@ -15,13 +16,13 @@ import java.util.stream.Collectors;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentMapper studentMapper;
+    private final LectureMapper lectureMapper;
     private final StudentRepository studentRepository;
-    private final LectureRepository lectureRepository;
 
-    public StudentServiceImpl(StudentMapper studentMapper, StudentRepository studentRepository, LectureRepository lectureRepository) {
+    public StudentServiceImpl(StudentMapper studentMapper, LectureMapper lectureMapper, StudentRepository studentRepository) {
         this.studentMapper = studentMapper;
+        this.lectureMapper = lectureMapper;
         this.studentRepository = studentRepository;
-        this.lectureRepository = lectureRepository;
     }
 
     @Override
@@ -57,6 +58,16 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void deleteStudent(Long id) {
         studentRepository.deleteById(id);
+    }
+
+    @Override
+    public List<LectureDTO> getStudentLectures(Long studentId) {
+        return studentRepository.findById(studentId)
+                .orElseThrow(RuntimeException::new)
+                .getLectures()
+                .stream()
+                .map(lectureMapper::lectureToLectureDTO)
+                .collect(Collectors.toList());
     }
 
 
