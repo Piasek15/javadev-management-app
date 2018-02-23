@@ -57,17 +57,17 @@ public class LectureController {
     public LectureWStudentListDTO addStudentToLecture(@PathVariable Long lectureId, @PathVariable Long studentId){
         return lectureService.addStudentToLecture(lectureId, studentId);
     }
-
-    @PutMapping("/{lectureId}/students/{studentId}/delete")
-    @ResponseStatus(HttpStatus.OK)
-    public LectureWStudentListDTO deleteStudentFromLecture(@PathVariable Long lectureId, @PathVariable Long studentId){
-        return lectureService.deleteStudentFromLecture(lectureId, studentId);
-    }
-
-    @GetMapping("/{lectureId}/students")
-    @ResponseStatus(HttpStatus.OK)
-    public List<StudentDTO> getLectureStudents(@PathVariable Long lectureId){
-        return lectureService.getLectureStudents(lectureId);
-    }
+//
+//    @PutMapping("/{lectureId}/students/{studentId}/delete")
+//    @ResponseStatus(HttpStatus.OK)
+//    public LectureWStudentListDTO deleteStudentFromLecture(@PathVariable Long lectureId, @PathVariable Long studentId){
+//        return lectureService.deleteStudentFromLecture(lectureId, studentId);
+//    }
+//
+//    @GetMapping("/{lectureId}/students")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<StudentDTO> getLectureStudents(@PathVariable Long lectureId){
+//        return lectureService.getLectureStudents(lectureId);
+//    }
 
 }

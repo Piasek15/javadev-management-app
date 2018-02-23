@@ -53,10 +53,10 @@ public class StudentController {
         studentService.deleteStudent(id);
     }
 
-    @GetMapping("/{studentId}/lectures")
-    @ResponseStatus(HttpStatus.OK)
-    public List<LectureDTO> getStudentLectures(@PathVariable Long studentId){
-        return studentService.getStudentLectures(studentId);
-    }
+//    @GetMapping("/{studentId}/lectures")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<LectureDTO> getStudentLectures(@PathVariable Long studentId){
+//        return studentService.getStudentLectures(studentId);
+//    }
 
 }

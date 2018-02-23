@@ -1,6 +1,7 @@
 package pl.piasecki.javadevmanagementapp.api.model;
 
 import lombok.Data;
+import pl.piasecki.javadevmanagementapp.domain.LectureStudent;
 import pl.piasecki.javadevmanagementapp.domain.Student;
 
 import java.util.Date;
@@ -11,5 +12,5 @@ public class LectureWStudentListDTO {
     private String topic;
     private String localization;
     private Date date;
-    private Set<Student> students;
+    private Set<LSStudentDTO> students;
 }

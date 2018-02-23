@@ -5,10 +5,11 @@ import pl.piasecki.javadevmanagementapp.api.mapper.LectureMapper;
 import pl.piasecki.javadevmanagementapp.api.mapper.StudentMapper;
 import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.LectureWStudentListDTO;
-import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
 import pl.piasecki.javadevmanagementapp.domain.Lecture;
+import pl.piasecki.javadevmanagementapp.domain.LectureStudent;
 import pl.piasecki.javadevmanagementapp.domain.Student;
 import pl.piasecki.javadevmanagementapp.repositories.LectureRepository;
+import pl.piasecki.javadevmanagementapp.repositories.LectureStudentRepository;
 import pl.piasecki.javadevmanagementapp.repositories.StudentRepository;
 
 import java.util.List;
@@ -21,12 +22,14 @@ public class LectureServiceImpl implements LectureService {
     private final StudentMapper studentMapper;
     private final LectureRepository lectureRepository;
     private final StudentRepository studentRepository;
+    private final LectureStudentRepository lectureStudentRepository;
 
-    public LectureServiceImpl(LectureMapper lectureMapper, StudentMapper studentMapper, LectureRepository lectureRepository, StudentRepository studentRepository) {
+    public LectureServiceImpl(LectureMapper lectureMapper, StudentMapper studentMapper, LectureRepository lectureRepository, StudentRepository studentRepository, LectureStudentRepository lectureStudentRepository) {
         this.lectureMapper = lectureMapper;
         this.studentMapper = studentMapper;
         this.lectureRepository = lectureRepository;
         this.studentRepository = studentRepository;
+        this.lectureStudentRepository = lectureStudentRepository;
     }
 
     @Override
@@ -72,31 +75,33 @@ public class LectureServiceImpl implements LectureService {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(RuntimeException::new);
 
-        lecture.addStudent(student);
-        lectureRepository.save(lecture);
+        LectureStudent lectureStudent = new LectureStudent();
+        lectureStudent.setLecture(lecture);
+        lectureStudent.setStudent(student);
+        lectureStudentRepository.save(lectureStudent);
         return lectureMapper.lectureToLectureWStudentListDTO(lecture);
     }
-
-    @Override
-    public LectureWStudentListDTO deleteStudentFromLecture(Long lectureId, Long studentId) {
-        Lecture lecture = lectureRepository.findById(lectureId)
-                .orElseThrow(RuntimeException::new);
-
-        Student student = studentRepository.findById(studentId)
-                .orElseThrow(RuntimeException::new);
-
-        lecture.deleteStudent(student);
-        lectureRepository.save(lecture);
-        return lectureMapper.lectureToLectureWStudentListDTO(lecture);
-    }
-
-    @Override
-    public List<StudentDTO> getLectureStudents(Long lectureId) {
-        return lectureRepository.findById(lectureId)
-                .orElseThrow(RuntimeException::new)
-                .getStudents()
-                .stream()
-                .map(studentMapper::studentToStudentDTO)
-                .collect(Collectors.toList());
-    }
+//
+//    @Override
+//    public LectureWStudentListDTO deleteStudentFromLecture(Long lectureId, Long studentId) {
+//        Lecture lecture = lectureRepository.findById(lectureId)
+//                .orElseThrow(RuntimeException::new);
+//
+//        Student student = studentRepository.findById(studentId)
+//                .orElseThrow(RuntimeException::new);
+//
+//        lecture.deleteStudent(student);
+//        lectureRepository.save(lecture);
+//        return lectureMapper.lectureToLectureWStudentListDTO(lecture);
+//    }
+//
+//    @Override
+//    public List<StudentDTO> getLectureStudents(Long lectureId) {
+//        return lectureRepository.findById(lectureId)
+//                .orElseThrow(RuntimeException::new)
+//                .getStudents()
+//                .stream()
+//                .map(studentMapper::studentToStudentDTO)
+//                .collect(Collectors.toList());
+//    }
 }

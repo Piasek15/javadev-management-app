@@ -60,15 +60,15 @@ public class StudentServiceImpl implements StudentService {
         studentRepository.deleteById(id);
     }
 
-    @Override
-    public List<LectureDTO> getStudentLectures(Long studentId) {
-        return studentRepository.findById(studentId)
-                .orElseThrow(RuntimeException::new)
-                .getLectures()
-                .stream()
-                .map(lectureMapper::lectureToLectureDTO)
-                .collect(Collectors.toList());
-    }
+//    @Override
+//    public List<LectureDTO> getStudentLectures(Long studentId) {
+//        return studentRepository.findById(studentId)
+//                .orElseThrow(RuntimeException::new)
+//                .getLectures()
+//                .stream()
+//                .map(lectureMapper::lectureToLectureDTO)
+//                .collect(Collectors.toList());
+//    }
 
 
 }

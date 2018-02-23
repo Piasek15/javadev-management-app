@@ -14,17 +14,18 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
+@Table(name = "STUDENTS")
 public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "STUDENT_ID")
     private Long id;
 
     private String firstName;
     private String lastName;
     private String email;
 
-    @ManyToMany(mappedBy = "students", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JsonIgnore
-    private Set<Lecture> lectures;
+    @OneToMany(mappedBy = "student")
+    private Set<LectureStudent> lectureStudents = new HashSet<>();
 }
