@@ -75,10 +75,7 @@ public class LectureServiceImpl implements LectureService {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(RuntimeException::new);
 
-        LectureStudent lectureStudent = new LectureStudent();
-        lectureStudent.setLecture(lecture);
-        lectureStudent.setStudent(student);
-        lectureStudentRepository.save(lectureStudent);
+        lectureStudentRepository.save(lecture.addStudent(student));
         return lectureMapper.lectureToLectureWStudentListDTO(lecture);
     }
 //

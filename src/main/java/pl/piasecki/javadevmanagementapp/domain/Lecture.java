@@ -28,10 +28,10 @@ public class Lecture {
     @OneToMany(mappedBy = "lecture")
     Set<LectureStudent> lectureStudents = new HashSet<>();
 
-    public void addStudent(Student student){
+    public LectureStudent addStudent(Student student){
         LectureStudent lectureStudent = new LectureStudent();
         lectureStudent.setStudent(student);
         lectureStudent.setLecture(this);
-        lectureStudents.add(lectureStudent);
+        return lectureStudent;
     }
 }

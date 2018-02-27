@@ -121,15 +121,15 @@ public class StudentControllerTest {
         verify(studentService).deleteStudent(1L);
     }
 
-    @Test
-    public void getStudentLectures() throws Exception {
-        List<LectureDTO> lectureDTOS = Arrays.asList(new LectureDTO(), new LectureDTO(), new LectureDTO());
-
-        when(studentService.getStudentLectures(anyLong())).thenReturn(lectureDTOS);
-
-        mockMvc.perform(get(BASE_URL + "/1/lectures")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(3)));
-    }
+//    @Test
+//    public void getStudentLectures() throws Exception {
+//        List<LectureDTO> lectureDTOS = Arrays.asList(new LectureDTO(), new LectureDTO(), new LectureDTO());
+//
+//        when(studentService.getStudentLectures(anyLong())).thenReturn(lectureDTOS);
+//
+//        mockMvc.perform(get(BASE_URL + "/1/lectures")
+//                .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$", hasSize(3)));
+//    }
 }

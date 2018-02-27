@@ -105,23 +105,23 @@ public class StudentServiceImplTest {
         verify(studentRepository, times(1)).deleteById(anyLong());
     }
 
-    @Test
-    public void getStudentLectures() throws Exception {
-        Lecture lecture1 = new Lecture();
-        Lecture lecture2 = new Lecture();
-
-        Set<Lecture> lectures = new HashSet<>();
-
-        lectures.add(lecture1);
-        lectures.add(lecture2);
-
-        Student student = new Student();
-        student.setLectures(lectures);
-
-        when(studentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(student));
-
-        List<LectureDTO> lectureDTOS = studentService.getStudentLectures(anyLong());
-
-        assertEquals(2, lectureDTOS.size());
-    }
+//    @Test
+//    public void getStudentLectures() throws Exception {
+//        Lecture lecture1 = new Lecture();
+//        Lecture lecture2 = new Lecture();
+//
+//        Set<Lecture> lectures = new HashSet<>();
+//
+//        lectures.add(lecture1);
+//        lectures.add(lecture2);
+//
+//        Student student = new Student();
+//        student.setLectures(lectures);
+//
+//        when(studentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(student));
+//
+//        List<LectureDTO> lectureDTOS = studentService.getStudentLectures(anyLong());
+//
+//        assertEquals(2, lectureDTOS.size());
+//    }
 }
