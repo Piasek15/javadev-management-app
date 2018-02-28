@@ -1,10 +1,7 @@
 package pl.piasecki.javadevmanagementapp.controllers;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.piasecki.javadevmanagementapp.api.model.LectureStudentDTO;
 import pl.piasecki.javadevmanagementapp.services.LectureStudentService;
 
@@ -27,5 +24,13 @@ public class LectureStudentController {
     @ResponseStatus(HttpStatus.OK)
     public List<LectureStudentDTO> getAllLectureStudents(){
         return lectureStudentService.getAllLectureStudents();
+    }
+
+    @PutMapping("/lecture/{lectureId}/student/{studentId}/set/{grade}/")
+    @ResponseStatus(HttpStatus.OK)
+    public LectureStudentDTO insetGrade(@PathVariable Long lectureId,
+                                        @PathVariable Long studentId,
+                                        @PathVariable Double grade){
+        return lectureStudentService.insetGrade(lectureId, studentId, grade);
     }
 }

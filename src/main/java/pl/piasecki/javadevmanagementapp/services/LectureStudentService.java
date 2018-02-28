@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface LectureStudentService {
     List<LectureStudentDTO> getAllLectureStudents();
-    LectureStudentDTO setGrade(Double grade);
+    LectureStudentDTO insetGrade(Long lectureId, Long studentId, Double grade);
 }

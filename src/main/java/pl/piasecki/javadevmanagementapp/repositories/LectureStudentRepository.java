@@ -12,4 +12,5 @@ public interface LectureStudentRepository extends JpaRepository<LectureStudent, 
     LectureStudent findLectureStudentByLectureAndStudent(Lecture lecture, Student student);
     List<LectureStudent> findAllByLecture_Id(Long lectureId);
     List<LectureStudent> findAllByStudent_Id(Long studentId);
+    LectureStudent findByLecture_IdAndStudent_Id(Long lectureId, Long studentId);
 }

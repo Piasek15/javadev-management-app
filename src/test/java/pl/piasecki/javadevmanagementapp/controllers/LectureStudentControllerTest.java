@@ -8,16 +8,22 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.LectureStudentDTO;
+import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
 import pl.piasecki.javadevmanagementapp.services.LectureStudentService;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.anyDouble;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static pl.piasecki.javadevmanagementapp.controllers.LectureStudentController.BASE_URL;
@@ -56,4 +62,26 @@ public class LectureStudentControllerTest {
                 .andExpect(jsonPath("$", hasSize(2)));
     }
 
+    @Test
+    public void insetGrade() throws Exception {
+        LectureDTO lectureDTO = new LectureDTO();
+        lectureDTO.setTopic(TOPIC);
+
+        StudentDTO studentDTO = new StudentDTO();
+        studentDTO.setFirstName(FIRST_NAME);
+
+        LectureStudentDTO lectureStudentDTO = new LectureStudentDTO();
+        lectureStudentDTO.setGrade(GRADE);
+        lectureStudentDTO.setStudent(studentDTO);
+        lectureStudentDTO.setLecture(lectureDTO);
+
+        when(lectureStudentService.insetGrade(anyLong(), anyLong(), anyDouble())).thenReturn(lectureStudentDTO);
+
+        mockMvc.perform(put(BASE_URL + "/lecture/1/student/1/set/3.5/")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.grade", equalTo(3.5)))
+                .andExpect(jsonPath("$.student.firstName", equalTo(FIRST_NAME)))
+                .andExpect(jsonPath("$.lecture.topic", equalTo(TOPIC)));
+    }
 }
