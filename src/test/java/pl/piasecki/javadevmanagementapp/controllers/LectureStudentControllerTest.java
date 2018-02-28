@@ -1,0 +1,59 @@
+package pl.piasecki.javadevmanagementapp.controllers;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import pl.piasecki.javadevmanagementapp.api.model.LectureStudentDTO;
+import pl.piasecki.javadevmanagementapp.services.LectureStudentService;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static pl.piasecki.javadevmanagementapp.controllers.LectureStudentController.BASE_URL;
+
+public class LectureStudentControllerTest {
+
+    public static final String TOPIC = "Spring Framework";
+    public static final String FIRST_NAME = "Adam";
+    public static final long ID = 1L;
+    public static final double GRADE = 3.5;
+
+    @Mock
+    LectureStudentService lectureStudentService;
+
+    @InjectMocks
+    LectureStudentController lectureStudentController;
+
+    MockMvc mockMvc;
+
+    @Before
+    public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(lectureStudentController).build();
+    }
+
+    @Test
+    public void getAllLectureStudents() throws Exception {
+        List<LectureStudentDTO> lectureStudentDTOS = Arrays
+                .asList(new LectureStudentDTO(), new LectureStudentDTO());
+
+        when(lectureStudentService.getAllLectureStudents()).thenReturn(lectureStudentDTOS);
+
+        mockMvc.perform(get(BASE_URL)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
+    }
+
+}
