@@ -1,6 +1,7 @@
 package pl.piasecki.javadevmanagementapp.services;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.piasecki.javadevmanagementapp.api.mapper.LectureMapper;
 import pl.piasecki.javadevmanagementapp.api.mapper.StudentMapper;
 import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
@@ -78,19 +79,23 @@ public class LectureServiceImpl implements LectureService {
         lectureStudentRepository.save(lecture.addStudent(student));
         return lectureMapper.lectureToLectureWStudentListDTO(lecture);
     }
-//
-//    @Override
-//    public LectureWStudentListDTO deleteStudentFromLecture(Long lectureId, Long studentId) {
-//        Lecture lecture = lectureRepository.findById(lectureId)
-//                .orElseThrow(RuntimeException::new);
-//
-//        Student student = studentRepository.findById(studentId)
-//                .orElseThrow(RuntimeException::new);
-//
-//        lecture.deleteStudent(student);
-//        lectureRepository.save(lecture);
-//        return lectureMapper.lectureToLectureWStudentListDTO(lecture);
-//    }
+
+    @Override
+    @Transactional
+    public LectureWStudentListDTO deleteStudentFromLecture(Long lectureId, Long studentId) {
+        Lecture lecture = lectureRepository.findById(lectureId)
+                .orElseThrow(RuntimeException::new);
+
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(RuntimeException::new);
+
+        lecture.getLectureStudents().remove(lectureStudentRepository
+                .findLectureStudentByLectureAndStudent(lecture, student));
+
+        lectureStudentRepository.deleteByLectureAndStudent(lecture, student);
+
+        return lectureMapper.lectureToLectureWStudentListDTO(lecture);
+    }
 //
 //    @Override
 //    public List<StudentDTO> getLectureStudents(Long lectureId) {

@@ -143,28 +143,32 @@ public class LectureControllerTest {
                 .andExpect(jsonPath("$.topic", equalTo(TOPIC)))
                 .andExpect(jsonPath("$.students[0].student.firstName", equalTo(LOC)));
     }
-//
-//    @Test
-//    public void deleteStudentFromLecture() throws Exception {
-//        Student student = new Student();
-//        student.setFirstName(LOC);
-//        Set<Student> students = new HashSet<>();
-//        students.add(student);
-//        students.remove(student);
-//
-//        LectureWStudentListDTO lectureWStudentListDTO = new LectureWStudentListDTO();
-//        lectureWStudentListDTO.setTopic(TOPIC);
-//        lectureWStudentListDTO.setStudents(students);
-//
-//        when(lectureService.deleteStudentFromLecture(anyLong(), anyLong())).thenReturn(lectureWStudentListDTO);
-//
-//
-//        mockMvc.perform(put(BASE_URL + "/1/students/1/delete")
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.students", hasSize(0)))
-//                .andExpect(jsonPath("$.topic", equalTo(TOPIC)));
-//    }
+
+    @Test
+    public void deleteStudentFromLecture() throws Exception {
+        StudentDTO studentDTO = new StudentDTO();
+        studentDTO.setFirstName(LOC);
+
+        LSStudentDTO lsStudentDTO = new LSStudentDTO();
+        lsStudentDTO.setStudent(studentDTO);
+
+        Set<LSStudentDTO> lsStudentDTOS = new HashSet<>();
+        lsStudentDTOS.add(lsStudentDTO);
+
+        LectureWStudentListDTO lectureWStudentListDTO = new LectureWStudentListDTO();
+        lectureWStudentListDTO.setTopic(TOPIC);
+        lectureWStudentListDTO.setStudents(lsStudentDTOS);
+        lectureWStudentListDTO.getStudents().remove(lsStudentDTO);
+
+        when(lectureService.deleteStudentFromLecture(anyLong(), anyLong())).thenReturn(lectureWStudentListDTO);
+
+
+        mockMvc.perform(put(BASE_URL + "/1/students/1/delete")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.students", hasSize(0)))
+                .andExpect(jsonPath("$.topic", equalTo(TOPIC)));
+    }
 //
 //    @Test
 //    public void getLectureStudents() throws Exception {

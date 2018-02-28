@@ -19,11 +19,11 @@ public class LectureStudent {
     @Column(name = "LECTURE_STUDENT_ID")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne//(cascade = CascadeType.ALL)
     @JoinColumn(name = "LECTURE_ID")
     private Lecture lecture;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne//(cascade = CascadeType.ALL)
     @JoinColumn(name = "STUDENT_ID")
     private Student student;
 

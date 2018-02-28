@@ -140,30 +140,24 @@ public class LectureServiceImplTest {
         assertEquals(FIRST_NAME, lectureWStudentListDTO.getStudents().iterator().next().getStudent().getFirstName());
     }
 
-//    @Test
-//    public void deleteStudentFromLecture() throws Exception {
-//        //given
-//        Student student = new Student();
-//        student.setFirstName(FIRST_NAME);
-//        student.setId(ID);
-//        Set<Student> students = new HashSet<>();
-//        students.add(student);
-//        students.remove(student);
-//
-//        Lecture lecture = new Lecture();
-//        lecture.setTopic(TOPIC);
-//        lecture.setStudents(students);
-//
-//        when(lectureRepository.findById(anyLong())).thenReturn(Optional.ofNullable(lecture));
-//        when(studentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(student));
-//        when(lectureRepository.save(any(Lecture.class))).thenReturn(lecture);
-//
-//        //when
-//        LectureWStudentListDTO lectureWStudentListDTO = lectureService.deleteStudentFromLecture(ID, anyLong());
-//
-//        assertEquals(TOPIC, lectureWStudentListDTO.getTopic());
-//        assertEquals(0, lectureWStudentListDTO.getStudents().size());
-//    }
+    @Test
+    public void deleteStudentFromLecture() throws Exception {
+        Student student = new Student();
+        student.setFirstName(FIRST_NAME);
+        student.setId(ID);
+
+        Lecture lecture = new Lecture();
+        lecture.setTopic(TOPIC);
+        lecture.setId(ID);
+
+        lectureStudentRepository.findLectureStudentByLectureAndStudent(lecture, student);
+        lectureStudentRepository.deleteByLectureAndStudent(lecture, student);
+
+        verify(lectureStudentRepository, times(1))
+                .deleteByLectureAndStudent(any(Lecture.class), any(Student.class));
+        verify(lectureStudentRepository, times(1))
+                .findLectureStudentByLectureAndStudent(any(Lecture.class), any(Student.class));
+    }
 //
 //    @Test
 //    public void getLectureStudents() throws Exception {

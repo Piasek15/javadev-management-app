@@ -13,6 +13,6 @@ public interface LectureService{
     LectureDTO updateLecture(Long id, LectureDTO lectureDTO);
     void deleteLecture(Long id);
     LectureWStudentListDTO addStudentToLecture(Long lectureId, Long studentId);
-//    LectureWStudentListDTO deleteStudentFromLecture(Long lectureId, Long studentId);
+    LectureWStudentListDTO deleteStudentFromLecture(Long lectureId, Long studentId);
 //    List<StudentDTO> getLectureStudents(Long lectureId);
 }

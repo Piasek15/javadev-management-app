@@ -1,6 +1,7 @@
 package pl.piasecki.javadevmanagementapp.controllers;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.LectureWStudentListDTO;
@@ -57,12 +58,12 @@ public class LectureController {
     public LectureWStudentListDTO addStudentToLecture(@PathVariable Long lectureId, @PathVariable Long studentId){
         return lectureService.addStudentToLecture(lectureId, studentId);
     }
-//
-//    @PutMapping("/{lectureId}/students/{studentId}/delete")
-//    @ResponseStatus(HttpStatus.OK)
-//    public LectureWStudentListDTO deleteStudentFromLecture(@PathVariable Long lectureId, @PathVariable Long studentId){
-//        return lectureService.deleteStudentFromLecture(lectureId, studentId);
-//    }
+
+    @PutMapping("/{lectureId}/students/{studentId}/delete")
+    @ResponseStatus(HttpStatus.OK)
+    public LectureWStudentListDTO deleteStudentFromLecture(@PathVariable Long lectureId, @PathVariable Long studentId){
+        return lectureService.deleteStudentFromLecture(lectureId, studentId);
+    }
 //
 //    @GetMapping("/{lectureId}/students")
 //    @ResponseStatus(HttpStatus.OK)

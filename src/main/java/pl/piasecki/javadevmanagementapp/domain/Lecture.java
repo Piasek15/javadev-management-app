@@ -34,4 +34,6 @@ public class Lecture {
         lectureStudent.setLecture(this);
         return lectureStudent;
     }
+
+
 }
