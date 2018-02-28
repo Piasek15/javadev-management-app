@@ -8,6 +8,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import pl.piasecki.javadevmanagementapp.api.model.LSLectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
 import pl.piasecki.javadevmanagementapp.domain.Lecture;
@@ -121,15 +122,15 @@ public class StudentControllerTest {
         verify(studentService).deleteStudent(1L);
     }
 
-//    @Test
-//    public void getStudentLectures() throws Exception {
-//        List<LectureDTO> lectureDTOS = Arrays.asList(new LectureDTO(), new LectureDTO(), new LectureDTO());
-//
-//        when(studentService.getStudentLectures(anyLong())).thenReturn(lectureDTOS);
-//
-//        mockMvc.perform(get(BASE_URL + "/1/lectures")
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$", hasSize(3)));
-//    }
+    @Test
+    public void getStudentLectures() throws Exception {
+        List<LSLectureDTO> lsLectureDTOS = Arrays.asList(new LSLectureDTO(), new LSLectureDTO());
+
+        when(studentService.getStudentLectures(anyLong())).thenReturn(lsLectureDTOS);
+
+        mockMvc.perform(get(BASE_URL + "/1/lectures")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
+    }
 }

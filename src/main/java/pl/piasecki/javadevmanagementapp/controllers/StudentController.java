@@ -2,6 +2,7 @@ package pl.piasecki.javadevmanagementapp.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import pl.piasecki.javadevmanagementapp.api.model.LSLectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
 import pl.piasecki.javadevmanagementapp.services.StudentService;
@@ -53,10 +54,10 @@ public class StudentController {
         studentService.deleteStudent(id);
     }
 
-//    @GetMapping("/{studentId}/lectures")
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<LectureDTO> getStudentLectures(@PathVariable Long studentId){
-//        return studentService.getStudentLectures(studentId);
-//    }
+    @GetMapping("/{studentId}/lectures")
+    @ResponseStatus(HttpStatus.OK)
+    public List<LSLectureDTO> getStudentLectures(@PathVariable Long studentId){
+        return studentService.getStudentLectures(studentId);
+    }
 
 }

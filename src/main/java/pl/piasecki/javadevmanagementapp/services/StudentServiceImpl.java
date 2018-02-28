@@ -2,11 +2,14 @@ package pl.piasecki.javadevmanagementapp.services;
 
 import org.springframework.stereotype.Service;
 import pl.piasecki.javadevmanagementapp.api.mapper.LectureMapper;
+import pl.piasecki.javadevmanagementapp.api.mapper.LectureStudentMapper;
 import pl.piasecki.javadevmanagementapp.api.mapper.StudentMapper;
+import pl.piasecki.javadevmanagementapp.api.model.LSLectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
 import pl.piasecki.javadevmanagementapp.domain.Student;
 import pl.piasecki.javadevmanagementapp.repositories.LectureRepository;
+import pl.piasecki.javadevmanagementapp.repositories.LectureStudentRepository;
 import pl.piasecki.javadevmanagementapp.repositories.StudentRepository;
 
 import java.util.List;
@@ -16,13 +19,15 @@ import java.util.stream.Collectors;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentMapper studentMapper;
-    private final LectureMapper lectureMapper;
+    private final LectureStudentMapper lectureStudentMapper;
     private final StudentRepository studentRepository;
+    private final LectureStudentRepository lectureStudentRepository;
 
-    public StudentServiceImpl(StudentMapper studentMapper, LectureMapper lectureMapper, StudentRepository studentRepository) {
+    public StudentServiceImpl(StudentMapper studentMapper, LectureStudentMapper lectureStudentMapper, StudentRepository studentRepository, LectureStudentRepository lectureStudentRepository) {
         this.studentMapper = studentMapper;
-        this.lectureMapper = lectureMapper;
+        this.lectureStudentMapper = lectureStudentMapper;
         this.studentRepository = studentRepository;
+        this.lectureStudentRepository = lectureStudentRepository;
     }
 
     @Override
@@ -60,15 +65,13 @@ public class StudentServiceImpl implements StudentService {
         studentRepository.deleteById(id);
     }
 
-//    @Override
-//    public List<LectureDTO> getStudentLectures(Long studentId) {
-//        return studentRepository.findById(studentId)
-//                .orElseThrow(RuntimeException::new)
-//                .getLectures()
-//                .stream()
-//                .map(lectureMapper::lectureToLectureDTO)
-//                .collect(Collectors.toList());
-//    }
+    @Override
+    public List<LSLectureDTO> getStudentLectures(Long studentId) {
+        return lectureStudentRepository.findAllByStudent_Id(studentId)
+                .stream()
+                .map(lectureStudentMapper::lectureStudentToLSLectureDTO)
+                .collect(Collectors.toList());
+    }
 
 
 }
