@@ -1,5 +1,6 @@
 package pl.piasecki.javadevmanagementapp.services;
 
+import pl.piasecki.javadevmanagementapp.api.model.LSStudentDTO;
 import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.LectureWStudentListDTO;
 import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
@@ -14,5 +15,5 @@ public interface LectureService{
     void deleteLecture(Long id);
     LectureWStudentListDTO addStudentToLecture(Long lectureId, Long studentId);
     LectureWStudentListDTO deleteStudentFromLecture(Long lectureId, Long studentId);
-//    List<StudentDTO> getLectureStudents(Long lectureId);
+    List<LSStudentDTO> getLectureStudents(Long lectureId);
 }

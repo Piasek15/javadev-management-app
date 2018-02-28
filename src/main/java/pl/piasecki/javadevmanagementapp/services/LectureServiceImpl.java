@@ -3,11 +3,13 @@ package pl.piasecki.javadevmanagementapp.services;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.piasecki.javadevmanagementapp.api.mapper.LectureMapper;
+import pl.piasecki.javadevmanagementapp.api.mapper.LectureStudentMapper;
 import pl.piasecki.javadevmanagementapp.api.mapper.StudentMapper;
+import pl.piasecki.javadevmanagementapp.api.model.LSStudentDTO;
 import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.LectureWStudentListDTO;
+import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
 import pl.piasecki.javadevmanagementapp.domain.Lecture;
-import pl.piasecki.javadevmanagementapp.domain.LectureStudent;
 import pl.piasecki.javadevmanagementapp.domain.Student;
 import pl.piasecki.javadevmanagementapp.repositories.LectureRepository;
 import pl.piasecki.javadevmanagementapp.repositories.LectureStudentRepository;
@@ -20,14 +22,14 @@ import java.util.stream.Collectors;
 public class LectureServiceImpl implements LectureService {
 
     private final LectureMapper lectureMapper;
-    private final StudentMapper studentMapper;
+    private final LectureStudentMapper lectureStudentMapper;
     private final LectureRepository lectureRepository;
     private final StudentRepository studentRepository;
     private final LectureStudentRepository lectureStudentRepository;
 
-    public LectureServiceImpl(LectureMapper lectureMapper, StudentMapper studentMapper, LectureRepository lectureRepository, StudentRepository studentRepository, LectureStudentRepository lectureStudentRepository) {
+    public LectureServiceImpl(LectureMapper lectureMapper, LectureStudentMapper lectureStudentMapper, LectureRepository lectureRepository, StudentRepository studentRepository, LectureStudentRepository lectureStudentRepository) {
         this.lectureMapper = lectureMapper;
-        this.studentMapper = studentMapper;
+        this.lectureStudentMapper = lectureStudentMapper;
         this.lectureRepository = lectureRepository;
         this.studentRepository = studentRepository;
         this.lectureStudentRepository = lectureStudentRepository;
@@ -96,14 +98,13 @@ public class LectureServiceImpl implements LectureService {
 
         return lectureMapper.lectureToLectureWStudentListDTO(lecture);
     }
-//
-//    @Override
-//    public List<StudentDTO> getLectureStudents(Long lectureId) {
-//        return lectureRepository.findById(lectureId)
-//                .orElseThrow(RuntimeException::new)
-//                .getStudents()
-//                .stream()
-//                .map(studentMapper::studentToStudentDTO)
-//                .collect(Collectors.toList());
-//    }
+
+    @Override
+    public List<LSStudentDTO> getLectureStudents(Long lectureId) {
+
+        return lectureStudentRepository.findAllByLecture_Id(lectureId)
+                .stream()
+                .map(lectureStudentMapper::lectureStudentToLSStudentDTO)
+                .collect(Collectors.toList());
+    }
 }

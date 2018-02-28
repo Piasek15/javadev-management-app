@@ -169,16 +169,16 @@ public class LectureControllerTest {
                 .andExpect(jsonPath("$.students", hasSize(0)))
                 .andExpect(jsonPath("$.topic", equalTo(TOPIC)));
     }
-//
-//    @Test
-//    public void getLectureStudents() throws Exception {
-//        List<StudentDTO> studentDTOS = Arrays.asList(new StudentDTO(), new StudentDTO());
-//
-//        when(lectureService.getLectureStudents(anyLong())).thenReturn(studentDTOS);
-//
-//        mockMvc.perform(get(BASE_URL + "/1/students")
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$", hasSize(2)));
-//    }
+
+    @Test
+    public void getLectureStudents() throws Exception {
+        List<LSStudentDTO> lsStudentDTOS = Arrays.asList(new LSStudentDTO(), new LSStudentDTO());
+
+        when(lectureService.getLectureStudents(anyLong())).thenReturn(lsStudentDTOS);
+
+        mockMvc.perform(get(BASE_URL + "/1/students")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
+    }
 }

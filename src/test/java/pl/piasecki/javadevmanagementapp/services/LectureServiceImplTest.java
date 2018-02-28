@@ -5,10 +5,11 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import pl.piasecki.javadevmanagementapp.api.mapper.LectureMapper;
+import pl.piasecki.javadevmanagementapp.api.mapper.LectureStudentMapper;
 import pl.piasecki.javadevmanagementapp.api.mapper.StudentMapper;
+import pl.piasecki.javadevmanagementapp.api.model.LSStudentDTO;
 import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.LectureWStudentListDTO;
-import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
 import pl.piasecki.javadevmanagementapp.domain.Lecture;
 import pl.piasecki.javadevmanagementapp.domain.LectureStudent;
 import pl.piasecki.javadevmanagementapp.domain.Student;
@@ -47,7 +48,7 @@ public class LectureServiceImplTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        lectureService = new LectureServiceImpl(LectureMapper.INSTANCE, StudentMapper.INSTANCE, lectureRepository, studentRepository, lectureStudentRepository);
+        lectureService = new LectureServiceImpl(LectureMapper.INSTANCE, LectureStudentMapper.INSTANCE, lectureRepository, studentRepository, lectureStudentRepository);
     }
 
     @Test
@@ -158,24 +159,14 @@ public class LectureServiceImplTest {
         verify(lectureStudentRepository, times(1))
                 .findLectureStudentByLectureAndStudent(any(Lecture.class), any(Student.class));
     }
-//
-//    @Test
-//    public void getLectureStudents() throws Exception {
-//        Student student1 = new Student();
-//        Student student2 = new Student();
-//
-//        Set<Student> studentSet = new HashSet<>();
-//
-//        studentSet.add(student1);
-//        studentSet.add(student2);
-//
-//        Lecture lecture = new Lecture();
-//        lecture.setStudents(studentSet);
-//
-//        when(lectureRepository.findById(anyLong())).thenReturn(Optional.ofNullable(lecture));
-//
-//        List<StudentDTO> studentDTOS = lectureService.getLectureStudents(anyLong());
-//
-//        assertEquals(2, studentDTOS.size());
-//    }
+
+    @Test
+    public void getLectureStudents() throws Exception {
+        List<LectureStudent> lectureStudents = Arrays.asList(new LectureStudent(), new LectureStudent());
+        when(lectureStudentRepository.findAllByLecture_Id(anyLong())).thenReturn(lectureStudents);
+
+        List<LSStudentDTO> lsStudentDTOS = lectureService.getLectureStudents(anyLong());
+
+        assertEquals(2, lsStudentDTOS.size());
+    }
 }
