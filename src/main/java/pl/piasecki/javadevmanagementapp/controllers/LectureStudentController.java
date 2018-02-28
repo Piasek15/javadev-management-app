@@ -26,6 +26,12 @@ public class LectureStudentController {
         return lectureStudentService.getAllLectureStudents();
     }
 
+    @GetMapping("/lecture/{lectureId}/student/{studentId}")
+    @ResponseStatus(HttpStatus.OK)
+    public LectureStudentDTO getLectureStudent(@PathVariable Long lectureId, @PathVariable Long studentId){
+        return lectureStudentService.getLectureStudent(lectureId, studentId);
+    }
+
     @PutMapping("/lecture/{lectureId}/student/{studentId}/set/{grade}/")
     @ResponseStatus(HttpStatus.OK)
     public LectureStudentDTO insetGrade(@PathVariable Long lectureId,

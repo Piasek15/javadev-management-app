@@ -29,6 +29,13 @@ public class LectureStudentServiceImpl implements LectureStudentService {
     }
 
     @Override
+    public LectureStudentDTO getLectureStudent(Long lectureId, Long studentId) {
+        return lectureStudentMapper
+                .lectureStudentToLectureStudentDTO(
+                        lectureStudentRepository.findByLecture_IdAndStudent_Id(lectureId, studentId));
+    }
+
+    @Override
     public LectureStudentDTO insetGrade(Long lectureId, Long studentId, Double grade) {
         LectureStudent lectureStudent = lectureStudentRepository.findByLecture_IdAndStudent_Id(lectureId, studentId);
         lectureStudent.setGrade(grade);

@@ -63,6 +63,29 @@ public class LectureStudentControllerTest {
     }
 
     @Test
+    public void getLectureStudent() throws Exception {
+        LectureDTO lectureDTO = new LectureDTO();
+        lectureDTO.setTopic(TOPIC);
+
+        StudentDTO studentDTO = new StudentDTO();
+        studentDTO.setFirstName(FIRST_NAME);
+
+        LectureStudentDTO lectureStudentDTO = new LectureStudentDTO();
+        lectureStudentDTO.setGrade(GRADE);
+        lectureStudentDTO.setStudent(studentDTO);
+        lectureStudentDTO.setLecture(lectureDTO);
+
+        when(lectureStudentService.getLectureStudent(anyLong(), anyLong())).thenReturn(lectureStudentDTO);
+
+        mockMvc.perform(get(BASE_URL + "/lecture/1/student/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.grade", equalTo(3.5)))
+                .andExpect(jsonPath("$.student.firstName", equalTo(FIRST_NAME)))
+                .andExpect(jsonPath("$.lecture.topic", equalTo(TOPIC)));
+    }
+
+    @Test
     public void insetGrade() throws Exception {
         LectureDTO lectureDTO = new LectureDTO();
         lectureDTO.setTopic(TOPIC);

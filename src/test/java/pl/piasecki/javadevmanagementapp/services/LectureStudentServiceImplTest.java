@@ -50,6 +50,29 @@ public class LectureStudentServiceImplTest {
     }
 
     @Test
+    public void getLectureStudent() throws Exception {
+        Lecture lecture = new Lecture();
+        lecture.setTopic(TOPIC);
+
+        Student student = new Student();
+        student.setFirstName(FIRST_NAME);
+
+        LectureStudent lectureStudent = new LectureStudent();
+        lectureStudent.setGrade(GRADE);
+        lectureStudent.setLecture(lecture);
+        lectureStudent.setStudent(student);
+
+        when(lectureStudentRepository.findByLecture_IdAndStudent_Id(anyLong(), anyLong()))
+                .thenReturn(lectureStudent);
+
+        LectureStudentDTO lectureStudentDTO = lectureStudentService.getLectureStudent(anyLong(), anyLong());
+
+        assertEquals(GRADE, lectureStudentDTO.getGrade());
+        assertEquals(TOPIC, lectureStudentDTO.getLecture().getTopic());
+        assertEquals(FIRST_NAME, lectureStudentDTO.getStudent().getFirstName());
+    }
+
+    @Test
     public void insetGrade() throws Exception {
         Lecture lecture = new Lecture();
         lecture.setTopic(TOPIC);
