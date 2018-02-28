@@ -38,4 +38,15 @@ public class LectureStudentServiceImpl implements LectureStudentService {
                 .lectureStudentToLectureStudentDTO(
                         lectureStudentRepository.findByLecture_IdAndStudent_Id(lectureId, studentId));
     }
+
+    @Override
+    public LectureStudentDTO deleteGrade(Long lectureId, Long studentId) {
+        LectureStudent lectureStudent = lectureStudentRepository.findByLecture_IdAndStudent_Id(lectureId, studentId);
+        lectureStudent.setGrade(null);
+        lectureStudentRepository.save(lectureStudent);
+
+        return lectureStudentMapper
+                .lectureStudentToLectureStudentDTO(
+                        lectureStudentRepository.findByLecture_IdAndStudent_Id(lectureId, studentId));
+    }
 }

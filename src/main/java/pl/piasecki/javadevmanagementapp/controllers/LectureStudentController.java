@@ -33,4 +33,10 @@ public class LectureStudentController {
                                         @PathVariable Double grade){
         return lectureStudentService.insetGrade(lectureId, studentId, grade);
     }
+
+    @PutMapping("/lecture/{lectureId}/student/{studentId}/delete")
+    @ResponseStatus(HttpStatus.OK)
+    public LectureStudentDTO deleteGrade(@PathVariable Long lectureId, @PathVariable Long studentId){
+        return lectureStudentService.deleteGrade(lectureId, studentId);
+    }
 }

@@ -84,4 +84,28 @@ public class LectureStudentControllerTest {
                 .andExpect(jsonPath("$.student.firstName", equalTo(FIRST_NAME)))
                 .andExpect(jsonPath("$.lecture.topic", equalTo(TOPIC)));
     }
+
+    @Test
+    public void deleteGrade() throws Exception {
+        LectureDTO lectureDTO = new LectureDTO();
+        lectureDTO.setTopic(TOPIC);
+
+        StudentDTO studentDTO = new StudentDTO();
+        studentDTO.setFirstName(FIRST_NAME);
+
+        LectureStudentDTO lectureStudentDTO = new LectureStudentDTO();
+        lectureStudentDTO.setGrade(GRADE);
+        lectureStudentDTO.setStudent(studentDTO);
+        lectureStudentDTO.setLecture(lectureDTO);
+        lectureStudentDTO.setGrade(null);
+
+        when(lectureStudentService.deleteGrade(anyLong(), anyLong())).thenReturn(lectureStudentDTO);
+
+        mockMvc.perform(put(BASE_URL + "/lecture/1/student/1/delete")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.grade", equalTo(null)))
+                .andExpect(jsonPath("$.student.firstName", equalTo(FIRST_NAME)))
+                .andExpect(jsonPath("$.lecture.topic", equalTo(TOPIC)));
+    }
 }
