@@ -118,4 +118,23 @@ public class LectureStudentServiceImplTest {
         assertEquals(TOPIC, lectureStudentDTO.getLecture().getTopic());
         assertEquals(FIRST_NAME, lectureStudentDTO.getStudent().getFirstName());
     }
+
+    @Test
+    public void getStudentLecturesByGrade() throws Exception {
+        LectureStudent lectureStudent1 = new LectureStudent();
+        lectureStudent1.setGrade(GRADE);
+
+        LectureStudent lectureStudent2 = new LectureStudent();
+        lectureStudent2.setGrade(GRADE);
+
+        List<LectureStudent> lectureStudents = Arrays.asList(lectureStudent1, lectureStudent2);
+
+        when(lectureStudentRepository.findAllByGrade(anyDouble())).thenReturn(lectureStudents);
+
+        List<LectureStudentDTO> lectureStudentDTOS = lectureStudentService.getLectureStudentsByGrade(anyDouble());
+
+        assertEquals(2, lectureStudentDTOS.size());
+        assertEquals(GRADE, lectureStudentDTOS.get(0).getGrade());
+        assertEquals(GRADE, lectureStudentDTOS.get(1).getGrade());
+    }
 }

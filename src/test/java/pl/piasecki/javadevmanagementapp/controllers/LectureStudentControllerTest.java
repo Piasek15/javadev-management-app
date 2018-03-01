@@ -131,4 +131,24 @@ public class LectureStudentControllerTest {
                 .andExpect(jsonPath("$.student.firstName", equalTo(FIRST_NAME)))
                 .andExpect(jsonPath("$.lecture.topic", equalTo(TOPIC)));
     }
+
+    @Test
+    public void getLectureStudentsByGrade() throws Exception {
+        LectureStudentDTO lectureStudentDTO1 = new LectureStudentDTO();
+        lectureStudentDTO1.setGrade(GRADE);
+
+        LectureStudentDTO lectureStudentDTO2 = new LectureStudentDTO();
+        lectureStudentDTO2.setGrade(GRADE);
+
+        List<LectureStudentDTO> lectureStudentDTOS = Arrays.asList(lectureStudentDTO1, lectureStudentDTO2);
+
+        when(lectureStudentService.getLectureStudentsByGrade(anyDouble())).thenReturn(lectureStudentDTOS);
+
+        mockMvc.perform(get(BASE_URL + "/grade/1/")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].grade", equalTo(GRADE)))
+                .andExpect(jsonPath("$[1].grade", equalTo(GRADE)));
+    }
 }

@@ -56,4 +56,12 @@ public class LectureStudentServiceImpl implements LectureStudentService {
                 .lectureStudentToLectureStudentDTO(
                         lectureStudentRepository.findByLecture_IdAndStudent_Id(lectureId, studentId));
     }
+
+    @Override
+    public List<LectureStudentDTO> getLectureStudentsByGrade(Double grade) {
+        return lectureStudentRepository.findAllByGrade(grade)
+                .stream()
+                .map(lectureStudentMapper::lectureStudentToLectureStudentDTO)
+                .collect(Collectors.toList());
+    }
 }

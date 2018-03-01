@@ -9,4 +9,5 @@ public interface LectureStudentService {
     LectureStudentDTO getLectureStudent(Long lectureId, Long studentId);
     LectureStudentDTO insetGrade(Long lectureId, Long studentId, Double grade);
     LectureStudentDTO deleteGrade(Long lectureId, Long studentId);
+    List<LectureStudentDTO> getLectureStudentsByGrade(Double grade);
 }

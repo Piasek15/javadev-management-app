@@ -45,4 +45,10 @@ public class LectureStudentController {
     public LectureStudentDTO deleteGrade(@PathVariable Long lectureId, @PathVariable Long studentId){
         return lectureStudentService.deleteGrade(lectureId, studentId);
     }
+
+    @GetMapping("/grade/{grade}/")
+    @ResponseStatus(HttpStatus.OK)
+    public List<LectureStudentDTO> getLectureStudentsByGrade(@PathVariable Double grade){
+        return lectureStudentService.getLectureStudentsByGrade(grade);
+    }
 }
