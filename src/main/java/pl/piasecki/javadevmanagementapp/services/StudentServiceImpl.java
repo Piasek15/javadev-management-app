@@ -73,5 +73,13 @@ public class StudentServiceImpl implements StudentService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<StudentDTO> getStudentsByFirstName(String firstName) {
+        return studentRepository.findAllByFirstName(firstName)
+                .stream()
+                .map(studentMapper::studentToStudentDTO)
+                .collect(Collectors.toList());
+    }
+
 
 }

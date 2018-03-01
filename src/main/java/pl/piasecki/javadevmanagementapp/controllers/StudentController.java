@@ -60,4 +60,10 @@ public class StudentController {
         return studentService.getStudentLectures(studentId);
     }
 
+    @GetMapping("/search/by-first-name/{firstName}/")
+    @ResponseStatus(HttpStatus.OK)
+    public List<StudentDTO> getStudentsByFirstName(@PathVariable String firstName){
+        return studentService.getStudentsByFirstName(firstName);
+    }
+
 }

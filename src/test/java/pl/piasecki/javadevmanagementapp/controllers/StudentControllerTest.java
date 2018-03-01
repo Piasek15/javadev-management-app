@@ -25,6 +25,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -132,5 +133,25 @@ public class StudentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)));
+    }
+
+    @Test
+    public void getStudentsByFirstName() throws Exception {
+        StudentDTO studentDTO1 = new StudentDTO();
+        studentDTO1.setFirstName(FIRST_NAME);
+
+        StudentDTO studentDTO2 = new StudentDTO();
+        studentDTO2.setFirstName(FIRST_NAME);
+
+        List<StudentDTO> studentDTOS = Arrays.asList(studentDTO1, studentDTO2);
+
+        when(studentService.getStudentsByFirstName(anyString())).thenReturn(studentDTOS);
+
+        mockMvc.perform(get(BASE_URL + "/search/by-first-name/Adam/")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].firstName", equalTo(FIRST_NAME)))
+                .andExpect(jsonPath("$[1].firstName", equalTo(FIRST_NAME)));
     }
 }

@@ -123,4 +123,23 @@ public class StudentServiceImplTest {
 
         assertEquals(3, lsLectureDTOS.size());
     }
+
+    @Test
+    public void getStudentsByFirstName() throws Exception {
+        Student student1 = new Student();
+        student1.setFirstName(FIRST_NAME);
+
+        Student student2 = new Student();
+        student2.setFirstName(FIRST_NAME);
+
+        List<Student> students = Arrays.asList(student1, student2);
+
+        when(studentRepository.findAllByFirstName(anyString())).thenReturn(students);
+
+        List<StudentDTO> studentDTOS = studentService.getStudentsByFirstName(anyString());
+
+        assertEquals(2, studentDTOS.size());
+        assertEquals(FIRST_NAME, studentDTOS.get(0).getFirstName());
+        assertEquals(FIRST_NAME, studentDTOS.get(1).getFirstName());
+    }
 }
