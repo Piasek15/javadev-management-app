@@ -16,4 +16,5 @@ public interface StudentService {
     List<LSLectureDTO> getStudentLectures(Long studentId);
     List<StudentDTO> getStudentsByFirstName(String firstName);
     List<StudentDTO> getStudentsByLastName(String lastName);
+    List<StudentDTO> getStudentsByFirstNameAndLastName(String firstName, String lastName);
 }

@@ -174,4 +174,28 @@ public class StudentControllerTest {
                 .andExpect(jsonPath("$[0].lastName", equalTo(LAST_NAME)))
                 .andExpect(jsonPath("$[1].lastName", equalTo(LAST_NAME)));
     }
+
+    @Test
+    public void getStudentsByFirstNameAndLastName() throws Exception {
+        StudentDTO studentDTO1 = new StudentDTO();
+        studentDTO1.setFirstName(FIRST_NAME);
+        studentDTO1.setLastName(LAST_NAME);
+
+        StudentDTO studentDTO2 = new StudentDTO();
+        studentDTO2.setFirstName(FIRST_NAME);
+        studentDTO2.setLastName(LAST_NAME);
+
+        List<StudentDTO> studentDTOS = Arrays.asList(studentDTO1, studentDTO2);
+
+        when(studentService.getStudentsByFirstNameAndLastName(anyString(), anyString())).thenReturn(studentDTOS);
+
+        mockMvc.perform(get(BASE_URL + "/search/by-first-name/Adam/and-last-name/Malysz/")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].firstName", equalTo(FIRST_NAME)))
+                .andExpect(jsonPath("$[1].firstName", equalTo(FIRST_NAME)))
+                .andExpect(jsonPath("$[0].lastName", equalTo(LAST_NAME)))
+                .andExpect(jsonPath("$[1].lastName", equalTo(LAST_NAME)));
+    }
 }

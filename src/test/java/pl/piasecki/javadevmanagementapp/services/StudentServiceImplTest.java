@@ -4,16 +4,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import pl.piasecki.javadevmanagementapp.api.mapper.LectureMapper;
 import pl.piasecki.javadevmanagementapp.api.mapper.LectureStudentMapper;
 import pl.piasecki.javadevmanagementapp.api.mapper.StudentMapper;
 import pl.piasecki.javadevmanagementapp.api.model.LSLectureDTO;
-import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
-import pl.piasecki.javadevmanagementapp.domain.Lecture;
 import pl.piasecki.javadevmanagementapp.domain.LectureStudent;
 import pl.piasecki.javadevmanagementapp.domain.Student;
-import pl.piasecki.javadevmanagementapp.repositories.LectureRepository;
 import pl.piasecki.javadevmanagementapp.repositories.LectureStudentRepository;
 import pl.piasecki.javadevmanagementapp.repositories.StudentRepository;
 
@@ -158,6 +154,29 @@ public class StudentServiceImplTest {
         List<StudentDTO> studentDTOS = studentService.getStudentsByLastName(anyString());
 
         assertEquals(2, studentDTOS.size());
+        assertEquals(LAST_NAME, studentDTOS.get(0).getLastName());
+        assertEquals(LAST_NAME, studentDTOS.get(1).getLastName());
+    }
+
+    @Test
+    public void getStudentsByFirstNameAndLastName() throws Exception {
+        Student student1 = new Student();
+        student1.setFirstName(FIRST_NAME);
+        student1.setLastName(LAST_NAME);
+
+        Student student2 = new Student();
+        student2.setFirstName(FIRST_NAME);
+        student2.setLastName(LAST_NAME);
+
+        List<Student> students = Arrays.asList(student1, student2);
+
+        when(studentRepository.findAllByFirstNameAndLastName(anyString(), anyString())).thenReturn(students);
+
+        List<StudentDTO> studentDTOS = studentService.getStudentsByFirstNameAndLastName(anyString(), anyString());
+
+        assertEquals(2, studentDTOS.size());
+        assertEquals(FIRST_NAME, studentDTOS.get(0).getFirstName());
+        assertEquals(FIRST_NAME, studentDTOS.get(1).getFirstName());
         assertEquals(LAST_NAME, studentDTOS.get(0).getLastName());
         assertEquals(LAST_NAME, studentDTOS.get(1).getLastName());
     }

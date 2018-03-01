@@ -1,14 +1,11 @@
 package pl.piasecki.javadevmanagementapp.services;
 
 import org.springframework.stereotype.Service;
-import pl.piasecki.javadevmanagementapp.api.mapper.LectureMapper;
 import pl.piasecki.javadevmanagementapp.api.mapper.LectureStudentMapper;
 import pl.piasecki.javadevmanagementapp.api.mapper.StudentMapper;
 import pl.piasecki.javadevmanagementapp.api.model.LSLectureDTO;
-import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
 import pl.piasecki.javadevmanagementapp.domain.Student;
-import pl.piasecki.javadevmanagementapp.repositories.LectureRepository;
 import pl.piasecki.javadevmanagementapp.repositories.LectureStudentRepository;
 import pl.piasecki.javadevmanagementapp.repositories.StudentRepository;
 
@@ -84,6 +81,14 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<StudentDTO> getStudentsByLastName(String lastName) {
         return studentRepository.findAllByLastName(lastName)
+                .stream()
+                .map(studentMapper::studentToStudentDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<StudentDTO> getStudentsByFirstNameAndLastName(String firstName, String lastName) {
+        return studentRepository.findAllByFirstNameAndLastName(firstName, lastName)
                 .stream()
                 .map(studentMapper::studentToStudentDTO)
                 .collect(Collectors.toList());

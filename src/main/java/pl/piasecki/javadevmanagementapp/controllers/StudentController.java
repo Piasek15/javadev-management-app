@@ -72,4 +72,11 @@ public class StudentController {
         return studentService.getStudentsByLastName(lastName);
     }
 
+    @GetMapping("/search/by-first-name/{firstName}/and-last-name/{lastName}/")
+    @ResponseStatus(HttpStatus.OK)
+    public List<StudentDTO> getStudentsByFirstNameAndLastName(@PathVariable String firstName,
+                                                              @PathVariable String lastName){
+        return studentService.getStudentsByFirstNameAndLastName(firstName, lastName);
+    }
+
 }
