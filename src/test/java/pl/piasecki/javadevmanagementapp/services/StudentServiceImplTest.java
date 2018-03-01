@@ -142,4 +142,23 @@ public class StudentServiceImplTest {
         assertEquals(FIRST_NAME, studentDTOS.get(0).getFirstName());
         assertEquals(FIRST_NAME, studentDTOS.get(1).getFirstName());
     }
+
+    @Test
+    public void getStudentsByLastName() throws Exception {
+        Student student1 = new Student();
+        student1.setLastName(LAST_NAME);
+
+        Student student2 = new Student();
+        student2.setLastName(LAST_NAME);
+
+        List<Student> students = Arrays.asList(student1, student2);
+
+        when(studentRepository.findAllByLastName(anyString())).thenReturn(students);
+
+        List<StudentDTO> studentDTOS = studentService.getStudentsByLastName(anyString());
+
+        assertEquals(2, studentDTOS.size());
+        assertEquals(LAST_NAME, studentDTOS.get(0).getLastName());
+        assertEquals(LAST_NAME, studentDTOS.get(1).getLastName());
+    }
 }

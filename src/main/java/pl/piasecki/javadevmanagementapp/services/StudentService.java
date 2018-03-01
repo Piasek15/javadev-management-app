@@ -15,4 +15,5 @@ public interface StudentService {
     void deleteStudent(Long id);
     List<LSLectureDTO> getStudentLectures(Long studentId);
     List<StudentDTO> getStudentsByFirstName(String firstName);
+    List<StudentDTO> getStudentsByLastName(String lastName);
 }
