@@ -1,5 +1,7 @@
 package pl.piasecki.javadevmanagementapp.services;
 
+import org.hibernate.type.DoubleType;
+import org.hibernate.type.LongType;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -8,6 +10,8 @@ import pl.piasecki.javadevmanagementapp.api.mapper.LectureStudentMapper;
 import pl.piasecki.javadevmanagementapp.api.mapper.StudentMapper;
 import pl.piasecki.javadevmanagementapp.api.model.LSLectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
+import pl.piasecki.javadevmanagementapp.api.model.StudentWithLecturesAndGradesDTO;
+import pl.piasecki.javadevmanagementapp.domain.Lecture;
 import pl.piasecki.javadevmanagementapp.domain.LectureStudent;
 import pl.piasecki.javadevmanagementapp.domain.Student;
 import pl.piasecki.javadevmanagementapp.repositories.LectureStudentRepository;
@@ -179,5 +183,35 @@ public class StudentServiceImplTest {
         assertEquals(FIRST_NAME, studentDTOS.get(1).getFirstName());
         assertEquals(LAST_NAME, studentDTOS.get(0).getLastName());
         assertEquals(LAST_NAME, studentDTOS.get(1).getLastName());
+    }
+
+    @Test
+    public void getStudentByEmail() throws Exception {
+        Student student = new Student();
+        student.setFirstName(FIRST_NAME);
+        student.setEmail(EMAIL);
+
+        Lecture lecture = new Lecture();
+        lecture.setTopic(TOPIC);
+
+        Double grade = 3.5;
+
+        LectureStudent lectureStudent = new LectureStudent();
+        lectureStudent.setLecture(lecture);
+        lectureStudent.setStudent(student);
+        lectureStudent.setGrade(grade);
+
+        Set<LectureStudent> lectureStudents = new HashSet<>();
+        lectureStudents.add(lectureStudent);
+
+        student.setLectureStudents(lectureStudents);
+
+        when(studentRepository.findByEmail(anyString())).thenReturn(student);
+
+        StudentWithLecturesAndGradesDTO studentWithLecturesAndGradesDTO = studentService.getStudentByEmail(anyString());
+
+        assertEquals(1, studentWithLecturesAndGradesDTO.getLecturesAndGrades().size());
+        assertEquals(grade, studentWithLecturesAndGradesDTO.getLecturesAndGrades().iterator().next().getGrade());
+        assertEquals(EMAIL, studentWithLecturesAndGradesDTO.getEmail());
     }
 }

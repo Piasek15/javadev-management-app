@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.piasecki.javadevmanagementapp.api.model.LSLectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
+import pl.piasecki.javadevmanagementapp.api.model.StudentWithLecturesAndGradesDTO;
 import pl.piasecki.javadevmanagementapp.services.StudentService;
 
 import java.util.Arrays;
@@ -77,6 +78,11 @@ public class StudentController {
     public List<StudentDTO> getStudentsByFirstNameAndLastName(@PathVariable String firstName,
                                                               @PathVariable String lastName){
         return studentService.getStudentsByFirstNameAndLastName(firstName, lastName);
+    }
+
+    @GetMapping("/search/by-email/{email}/")
+    public StudentWithLecturesAndGradesDTO getStudentByEmail(@PathVariable String email){
+        return studentService.getStudentByEmail(email);
     }
 
 }

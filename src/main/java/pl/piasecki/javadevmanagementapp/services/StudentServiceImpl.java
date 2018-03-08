@@ -5,6 +5,7 @@ import pl.piasecki.javadevmanagementapp.api.mapper.LectureStudentMapper;
 import pl.piasecki.javadevmanagementapp.api.mapper.StudentMapper;
 import pl.piasecki.javadevmanagementapp.api.model.LSLectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
+import pl.piasecki.javadevmanagementapp.api.model.StudentWithLecturesAndGradesDTO;
 import pl.piasecki.javadevmanagementapp.domain.Student;
 import pl.piasecki.javadevmanagementapp.repositories.LectureStudentRepository;
 import pl.piasecki.javadevmanagementapp.repositories.StudentRepository;
@@ -92,6 +93,11 @@ public class StudentServiceImpl implements StudentService {
                 .stream()
                 .map(studentMapper::studentToStudentDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public StudentWithLecturesAndGradesDTO getStudentByEmail(String email) {
+        return studentMapper.studentToStudentWithLecturesAndGradesDTO(studentRepository.findByEmail(email));
     }
 
 

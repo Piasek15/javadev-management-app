@@ -3,6 +3,7 @@ package pl.piasecki.javadevmanagementapp.services;
 import pl.piasecki.javadevmanagementapp.api.model.LSLectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
+import pl.piasecki.javadevmanagementapp.api.model.StudentWithLecturesAndGradesDTO;
 
 import java.util.List;
 
@@ -17,4 +18,5 @@ public interface StudentService {
     List<StudentDTO> getStudentsByFirstName(String firstName);
     List<StudentDTO> getStudentsByLastName(String lastName);
     List<StudentDTO> getStudentsByFirstNameAndLastName(String firstName, String lastName);
+    StudentWithLecturesAndGradesDTO getStudentByEmail(String email);
 }

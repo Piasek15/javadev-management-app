@@ -8,9 +8,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import pl.piasecki.javadevmanagementapp.api.model.LSLectureDTO;
-import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
-import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
+import pl.piasecki.javadevmanagementapp.api.model.*;
 import pl.piasecki.javadevmanagementapp.domain.Lecture;
 import pl.piasecki.javadevmanagementapp.services.StudentService;
 
@@ -39,7 +37,7 @@ public class StudentControllerTest {
     public static final String FIRST_NAME = "Adam";
     public static final String LAST_NAME = "Malysz";
     public static final String EMAIL = "adam.malysz@gmail.com";
-    //public static final String TOPIC = "Spring Framework";
+    public static final String TOPIC = "Spring Framework";
 
     @Mock
     StudentService studentService;
@@ -197,5 +195,34 @@ public class StudentControllerTest {
                 .andExpect(jsonPath("$[1].firstName", equalTo(FIRST_NAME)))
                 .andExpect(jsonPath("$[0].lastName", equalTo(LAST_NAME)))
                 .andExpect(jsonPath("$[1].lastName", equalTo(LAST_NAME)));
+    }
+
+    @Test
+    public void getStudentByEmail() throws Exception {
+
+        LectureDTO lectureDTO = new LectureDTO();
+        lectureDTO.setTopic(TOPIC);
+
+        Double grade = 3.5;
+
+        LSLectureAndGradeDTO lsLectureAndGradeDTO = new LSLectureAndGradeDTO();
+        lsLectureAndGradeDTO.setGrade(grade);
+        lsLectureAndGradeDTO.setLecture(lectureDTO);
+
+        Set<LSLectureAndGradeDTO> lsLectureAndGradeDTOS = new HashSet<>();
+        lsLectureAndGradeDTOS.add(lsLectureAndGradeDTO);
+
+        StudentWithLecturesAndGradesDTO studentWithLecturesAndGradesDTO = new StudentWithLecturesAndGradesDTO();
+        studentWithLecturesAndGradesDTO.setEmail(EMAIL);
+        studentWithLecturesAndGradesDTO.setLecturesAndGrades(lsLectureAndGradeDTOS);
+
+        when(studentService.getStudentByEmail(anyString())).thenReturn(studentWithLecturesAndGradesDTO);
+
+        mockMvc.perform(get(BASE_URL + "/search/by-email/ddd@gmial.com/")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email", equalTo(EMAIL)))
+                .andExpect(jsonPath("$.lecturesAndGrades", hasSize(1)))
+                .andExpect(jsonPath("$.lecturesAndGrades[0].grade", equalTo(grade)));
     }
 }
