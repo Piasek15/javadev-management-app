@@ -7,6 +7,7 @@ import pl.piasecki.javadevmanagementapp.api.model.LSLectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
 import pl.piasecki.javadevmanagementapp.api.model.StudentWithLecturesAndGradesDTO;
 import pl.piasecki.javadevmanagementapp.domain.Student;
+import pl.piasecki.javadevmanagementapp.exceptions.NotFoundException;
 import pl.piasecki.javadevmanagementapp.repositories.LectureStudentRepository;
 import pl.piasecki.javadevmanagementapp.repositories.StudentRepository;
 
@@ -40,7 +41,7 @@ public class StudentServiceImpl implements StudentService {
     public StudentDTO getStudentById(Long id) {
         return studentRepository.findById(id)
                 .map(studentMapper::studentToStudentDTO)
-                .orElseThrow(RuntimeException::new); //TODO better exception
+                .orElseThrow(() -> new NotFoundException("Student (ID: " + id + ") Not Found"));
     }
 
     @Override

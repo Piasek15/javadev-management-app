@@ -11,6 +11,7 @@ import pl.piasecki.javadevmanagementapp.api.model.LectureWStudentListDTO;
 import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
 import pl.piasecki.javadevmanagementapp.domain.Lecture;
 import pl.piasecki.javadevmanagementapp.domain.Student;
+import pl.piasecki.javadevmanagementapp.exceptions.NotFoundException;
 import pl.piasecki.javadevmanagementapp.repositories.LectureRepository;
 import pl.piasecki.javadevmanagementapp.repositories.LectureStudentRepository;
 import pl.piasecki.javadevmanagementapp.repositories.StudentRepository;
@@ -47,7 +48,7 @@ public class LectureServiceImpl implements LectureService {
     public LectureWStudentListDTO getLectureById(Long id) {
         return lectureRepository.findById(id)
                 .map(lectureMapper::lectureToLectureWStudentListDTO)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new NotFoundException("Lecture (ID: " + id + ") Not Found"));
     }
 
     @Override
@@ -73,10 +74,10 @@ public class LectureServiceImpl implements LectureService {
     @Override
     public LectureWStudentListDTO addStudentToLecture(Long lectureId, Long studentId) {
         Lecture lecture = lectureRepository.findById(lectureId)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new NotFoundException("Lecture (ID: " + lectureId + ") Not Found"));
 
         Student student = studentRepository.findById(studentId)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new NotFoundException("Student (ID: " + studentId + ") Not Found"));
 
         lectureStudentRepository.save(lecture.addStudent(student));
         return lectureMapper.lectureToLectureWStudentListDTO(lecture);
@@ -86,10 +87,10 @@ public class LectureServiceImpl implements LectureService {
     @Transactional
     public LectureWStudentListDTO deleteStudentFromLecture(Long lectureId, Long studentId) {
         Lecture lecture = lectureRepository.findById(lectureId)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new NotFoundException("Lecture (ID: " + lectureId + ") Not Found"));
 
         Student student = studentRepository.findById(studentId)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new NotFoundException("Student (ID: " + studentId + ") Not Found"));
 
         lecture.getLectureStudents().remove(lectureStudentRepository
                 .findLectureStudentByLectureAndStudent(lecture, student));
