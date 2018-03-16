@@ -4,6 +4,7 @@ import org.junit.Test;
 import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
 import pl.piasecki.javadevmanagementapp.domain.Lecture;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -12,7 +13,7 @@ public class LectureMapperTest {
 
     public static final String TOPIC = "Spring Framework";
     public static final String LOC = "Rzeszow WSIZ";
-    public Date date = new Date(2018, 1, 15);
+    public LocalDateTime date = LocalDateTime.of(2018, 7, 15, 18, 0);
 
     LectureMapper lectureMapper = LectureMapper.INSTANCE;
 
