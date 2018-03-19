@@ -10,13 +10,16 @@ import pl.piasecki.javadevmanagementapp.api.model.LectureDTO;
 import pl.piasecki.javadevmanagementapp.api.model.LectureWStudentListDTO;
 import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
 import pl.piasecki.javadevmanagementapp.domain.Lecture;
+import pl.piasecki.javadevmanagementapp.domain.LectureStudent;
 import pl.piasecki.javadevmanagementapp.domain.Student;
+import pl.piasecki.javadevmanagementapp.exceptions.DuplicateException;
 import pl.piasecki.javadevmanagementapp.exceptions.NotFoundException;
 import pl.piasecki.javadevmanagementapp.repositories.LectureRepository;
 import pl.piasecki.javadevmanagementapp.repositories.LectureStudentRepository;
 import pl.piasecki.javadevmanagementapp.repositories.StudentRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -72,15 +75,23 @@ public class LectureServiceImpl implements LectureService {
     }
 
     @Override
-    public LectureWStudentListDTO addStudentToLecture(Long lectureId, Long studentId) {
-        Lecture lecture = lectureRepository.findById(lectureId)
-                .orElseThrow(() -> new NotFoundException("Lecture (ID: " + lectureId + ") Not Found"));
+    public LectureWStudentListDTO addStudentToLecture(Long lectureId, Long studentId) throws RuntimeException {
+        Optional<LectureStudent> lectureStudentOptional = Optional
+                .ofNullable(lectureStudentRepository.findByLecture_IdAndStudent_Id(lectureId, studentId));
 
-        Student student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new NotFoundException("Student (ID: " + studentId + ") Not Found"));
+        if (lectureStudentOptional.isPresent()){
+            throw new DuplicateException("Student (ID: " + studentId + ") is already present on Lecture (ID: "
+                    + lectureId + ").");
+        }else {
+            Lecture lecture = lectureRepository.findById(lectureId)
+                    .orElseThrow(() -> new NotFoundException("Lecture (ID: " + lectureId + ") Not Found"));
 
-        lectureStudentRepository.save(lecture.addStudent(student));
-        return lectureMapper.lectureToLectureWStudentListDTO(lecture);
+            Student student = studentRepository.findById(studentId)
+                    .orElseThrow(() -> new NotFoundException("Student (ID: " + studentId + ") Not Found"));
+
+            lectureStudentRepository.save(lecture.addStudent(student));
+            return lectureMapper.lectureToLectureWStudentListDTO(lecture);
+        }
     }
 
     @Override

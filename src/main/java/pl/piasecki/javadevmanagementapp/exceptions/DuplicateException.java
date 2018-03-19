@@ -3,17 +3,17 @@ package pl.piasecki.javadevmanagementapp.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-public class NotFoundException extends RuntimeException {
-    public NotFoundException() {
+@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+public class DuplicateException extends RuntimeException {
+    public DuplicateException() {
         super();
     }
 
-    public NotFoundException(String s) {
+    public DuplicateException(String s) {
         super(s);
     }
 
-    public NotFoundException(String s, Throwable throwable) {
+    public DuplicateException(String s, Throwable throwable) {
         super(s, throwable);
     }
 }
