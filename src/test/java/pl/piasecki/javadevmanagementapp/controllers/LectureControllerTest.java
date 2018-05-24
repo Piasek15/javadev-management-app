@@ -136,7 +136,7 @@ public class LectureControllerTest {
 
         when(lectureService.addStudentToLecture(anyLong(), anyLong())).thenReturn(lectureWStudentListDTO);
 
-        mockMvc.perform(put(BASE_URL + "/1/students/1/add")
+        mockMvc.perform(post(BASE_URL + "/1/students/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.students", hasSize(1)))
@@ -163,7 +163,7 @@ public class LectureControllerTest {
         when(lectureService.deleteStudentFromLecture(anyLong(), anyLong())).thenReturn(lectureWStudentListDTO);
 
 
-        mockMvc.perform(put(BASE_URL + "/1/students/1/delete")
+        mockMvc.perform(delete(BASE_URL + "/1/students/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.students", hasSize(0)))

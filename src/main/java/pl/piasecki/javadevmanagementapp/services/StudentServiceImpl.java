@@ -53,10 +53,16 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentDTO updateStudent(Long id, StudentDTO studentDTO) {
-        Student student = studentMapper.studentDTOToStudent(studentDTO);
-        student.setId(id);
-        studentRepository.save(student);
-        return studentMapper.studentToStudentDTO(student);
+        Student studentNew = studentMapper.studentDTOToStudent(studentDTO);
+        Student studentOld = studentRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Student (ID: " + id + ") Not Found"));
+
+        studentOld.setFirstName(studentNew.getFirstName());
+        studentOld.setLastName(studentNew.getLastName());
+        studentOld.setEmail(studentNew.getEmail());
+
+        studentRepository.save(studentOld);
+        return studentMapper.studentToStudentDTO(studentOld);
     }
 
     @Override

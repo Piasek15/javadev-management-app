@@ -63,10 +63,16 @@ public class LectureServiceImpl implements LectureService {
 
     @Override
     public LectureDTO updateLecture(Long id, LectureDTO lectureDTO) {
-        Lecture lecture = lectureMapper.lectureDTOToLecture(lectureDTO);
-        lecture.setId(id);
-        lectureRepository.save(lecture);
-        return lectureMapper.lectureToLectureDTO(lecture);
+        Lecture lectureNew = lectureMapper.lectureDTOToLecture(lectureDTO);
+        Lecture lectureOld = lectureRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Lecture (ID: " + id + ") Not Found"));
+
+        lectureOld.setTopic(lectureNew.getTopic());
+        lectureOld.setDate(lectureNew.getDate());
+        lectureOld.setLocalization(lectureNew.getLocalization());
+
+        lectureRepository.save(lectureOld);
+        return lectureMapper.lectureToLectureDTO(lectureOld);
     }
 
     @Override

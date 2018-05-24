@@ -97,6 +97,7 @@ public class LectureServiceImplTest {
         Lecture lecture = new Lecture();
         lecture.setTopic(lectureDTO.getTopic());
 
+        when(lectureRepository.findById(anyLong())).thenReturn(java.util.Optional.ofNullable(lecture));
         when(lectureRepository.save(any(Lecture.class))).thenReturn(lecture);
 
         LectureDTO updatedDTO = lectureService.updateLecture(anyLong(), lectureDTO);

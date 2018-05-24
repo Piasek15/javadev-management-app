@@ -43,7 +43,7 @@ public class LectureController {
     @ApiOperation(value = "Create new lecture.")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public LectureDTO createNewLecture(@Valid @RequestBody LectureDTO lectureDTO){
+    public LectureDTO createNewLecture(@RequestBody LectureDTO lectureDTO){
         return lectureService.createNewLecture(lectureDTO);
     }
 
@@ -62,14 +62,14 @@ public class LectureController {
     }
 
     @ApiOperation(value = "Add student to lecture.", notes = "Adding student makes him present on lecture and give opportunity to set a grade.")
-    @PutMapping("/{lectureId}/students/{studentId}/add")
+    @PostMapping("/{lectureId}/students/{studentId}")
     @ResponseStatus(HttpStatus.OK)
     public LectureWStudentListDTO addStudentToLecture(@PathVariable Long lectureId, @PathVariable Long studentId){
         return lectureService.addStudentToLecture(lectureId, studentId);
     }
 
     @ApiOperation(value = "Delete student from lecture.")
-    @PutMapping("/{lectureId}/students/{studentId}/delete")
+    @DeleteMapping("/{lectureId}/students/{studentId}")
     @ResponseStatus(HttpStatus.OK)
     public LectureWStudentListDTO deleteStudentFromLecture(@PathVariable Long lectureId, @PathVariable Long studentId){
         return lectureService.deleteStudentFromLecture(lectureId, studentId);

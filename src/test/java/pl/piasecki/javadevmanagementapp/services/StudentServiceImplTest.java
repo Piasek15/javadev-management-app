@@ -98,6 +98,7 @@ public class StudentServiceImplTest {
         Student student = new Student();
         student.setEmail(studentDTO.getEmail());
 
+        when(studentRepository.findById(anyLong())).thenReturn(java.util.Optional.ofNullable(student));
         when(studentRepository.save(any(Student.class))).thenReturn(student);
 
         StudentDTO savedDTO = studentService.updateStudent(anyLong(), studentDTO);
