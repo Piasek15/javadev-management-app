@@ -10,6 +10,7 @@ import pl.piasecki.javadevmanagementapp.api.model.LectureWStudentListDTO;
 import pl.piasecki.javadevmanagementapp.api.model.StudentDTO;
 import pl.piasecki.javadevmanagementapp.services.LectureService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static pl.piasecki.javadevmanagementapp.controllers.LectureController.BASE_URL;
@@ -42,7 +43,7 @@ public class LectureController {
     @ApiOperation(value = "Create new lecture.")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public LectureDTO createNewLecture(@RequestBody LectureDTO lectureDTO){
+    public LectureDTO createNewLecture(@Valid @RequestBody LectureDTO lectureDTO){
         return lectureService.createNewLecture(lectureDTO);
     }
 

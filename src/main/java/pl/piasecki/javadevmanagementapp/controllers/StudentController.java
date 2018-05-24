@@ -56,7 +56,7 @@ public class StudentController {
 
     @ApiOperation(value = "Delete student.")
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.OK) //todo
     public void deleteStudent(@PathVariable Long id){
         studentService.deleteStudent(id);
     }

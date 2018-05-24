@@ -11,14 +11,22 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @EnableWebSecurity
 @Configuration
-@Profile("Production")
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
+
+    private static final String[] AUTH_WHITELIST = {
+            // -- swagger ui
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/v2/api-docs",
+            "/webjars/**"
+    };
 
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/lectures").hasRole("STUDENT")
                 .antMatchers(HttpMethod.PUT, "/lectures/*/students/*/add").hasRole("STUDENT")
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/**").hasRole("ADMIN")
                 .and()
                 .csrf().disable()
